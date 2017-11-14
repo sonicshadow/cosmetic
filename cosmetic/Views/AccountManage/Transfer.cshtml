@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "公司帐户银行相互转帐";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">资金管理</a></li>
+    <li class="active">公司帐户银行相互转帐</li>
+</ol>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class = "control-label col-md-2">日期</label>
+            <div class="col-md-10">
+                <input type="text" name="time" value="@DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")" class="form-control" />
+                @Html.ValidationMessage("time", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">转入帐号</label>
+            <div class="col-md-10">
+                @Html.DropDownList("inPayeeId", (List<SelectListItem>)ViewBag.Payee, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessage("inPayeeId", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">转出账号</label>
+            <div class="col-md-10">
+                @Html.DropDownList("outPayeeId", (List<SelectListItem>)ViewBag.Payee, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessage("outPayeeId", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">转帐金额</label>
+            <div class="col-md-10">
+                <input type="text" name="price" class="form-control" value="0" />
+                @Html.ValidationMessage("price", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">手续费</label>
+            <div class="col-md-10">
+                <input type="text" name="fee" class="form-control" value="0" />
+                @Html.ValidationMessage("fee", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="确认转帐" class="btn btn-default sure" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/transfer")
+}

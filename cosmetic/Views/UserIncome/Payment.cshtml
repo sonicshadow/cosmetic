@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Cosmetic.Models.DirectPaymentViewModel>
+
+@{
+    ViewBag.Title = "直推奖付款报表";
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index",new { isPay=false})">奖励管理</a></li>
+    <li class="active">直推奖付款报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="@Url.Action("PaymentExport", new { ids=Request["ids"],payeeId=Request["payeeId"]})">
+                        导出
+                    </a>
+                </li>
+            </ul>
+            <input type="hidden" id="ids" value="@Request["ids"]" />
+            <input type="hidden" id="payeeId" value="@Request["payeeId"]" />
+            <button type="button" id="payForRe" class="btn navbar-btn btn-default">确认付款</button>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Pay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableBankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableNumber)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Totla)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.HiddenFor(model=>item.ID)
+            @Html.DisplayFor(modelItem => item.Pay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivableBankName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivableCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivableName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivableNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Totla)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remark)
+        </td>
+    </tr>
+}
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>合计</td>
+            <td>
+                @Model.Sum(s=>s.Totla)
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/userIncomeIndex")
+}

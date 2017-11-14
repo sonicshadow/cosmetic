@@ -1,0 +1,84 @@
+﻿@model Cosmetic.Models.RegisterByUserViewModel
+@{
+    ViewBag.Title = "提交下级";
+    SelectList selBank = new SelectList(Cosmetic.Bll.SystemSettings.Banks);
+    SelectList selList = ViewBag.Rank;
+    SelectList selTeam = ViewBag.Team;
+}
+<div class="register">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("我的下级", "Team", "UserProduct")</li>
+        <li class="active">添加下级</li>
+    </ol>
+
+
+    <div class="info">
+        @using (Html.BeginForm("RegisterByUser", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="step">
+                        <ul class="progress-wrap">
+                            <li class="active">
+                                <div class="progress-line"></div>
+                                <div class="progress-content">
+                                    <span class="progress-number">1</span>
+                                    <span class="progress-text">提交用户信息</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="progress-line"></div>
+                                <div class="progress-content">
+                                    <span class="progress-number">2</span>
+                                    <span class="progress-text">审核</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="progress-content">
+                                    <span class="progress-number">3</span>
+                                    <span class="progress-text">完成</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Rank, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Rank, selList, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Rank, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Recommend, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Recommend, selTeam, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Recommend, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="submit" class="btn btn-default" value="提交" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

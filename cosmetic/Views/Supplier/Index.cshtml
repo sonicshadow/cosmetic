@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Cosmetic.Models.Supplier>
+
+@{
+    ViewBag.Title = "供应商管理";
+}
+
+<div class="supplierIndex">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("添加供应商", "Create")</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Bank)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankCard)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th></th>
+            </tr>
+
+        </thead>
+      
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bank)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("详情", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("删除", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>
+    @Html.PageList((PagedList.IPagedList)ViewBag.Page, Url.PageUrl())
+</div>

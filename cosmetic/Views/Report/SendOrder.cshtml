@@ -1,0 +1,175 @@
+﻿@model IEnumerable<Cosmetic.Models.SendOrderViewModel>
+
+@{
+    ViewBag.Title = "未发货订单明细";
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">未发货订单明细</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a target="_blank" href="@($"{Url.Action("SendOrderExport",new { to= Request["to"],from=Request["from"] , start =Request["start"],end=Request["end"]})}")">导出</a></li>
+            </ul>
+            @using (Html.BeginForm("SendOrder", "Report", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                <div class="form-group">
+                    <input name="to" value="@Request["to"]" type="text" class="form-control" placeholder="进货人">
+                </div>
+                <div class="form-group">
+                    <input name="from" value="@Request["from"]" type="text" class="form-control" placeholder="发货人">
+                </div>
+                <div class="form-group">
+                    <input name="start" value="@Request["start"]" type="text" class="form-control" placeholder="开始时间" />
+                </div>
+                <div class="form-group">
+                    <input name="end" value="@Request["end"]" type="text" class="form-control" placeholder="结束时间" />
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            }
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Send)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SendTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSendTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parent)
+            </td>
+            <td>
+                @if (item.ParentRank.HasValue)
+                {
+                    @item.ParentRank.GetDisplayName()
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @item.UserRank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Send)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSendTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>合计</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Model.Sum(s=>s.Count)
+            </td>
+            <td>@Model.Sum(s => s.Send)</td>
+            <td>
+                @Model.Sum(s => s.IsSend)
+            </td>
+            <td></td>
+            <td>
+                @Model.Sum(s => s.Total)
+            </td>
+            <td>
+                @Model.Sum(s => s.SendTotal)
+            </td>
+            <td>
+                @Model.Sum(s => s.IsSendTotal)
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script>
+        $("[name=start],[name=end]").date();
+        new searchUser({ target: "[name=from]" });
+        new searchUser({ target: "[name=to]" });
+    </script>
+}

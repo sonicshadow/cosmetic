@@ -1,0 +1,38 @@
+﻿@model Cosmetic.Models.Department
+
+@{
+    ViewBag.Title = "删除部门";
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Staffs")">员工管理</a></li>
+    <li><a href="@Url.Action("Index")">部门管理</a></li>
+    <li class="active">删除</li>
+</ol>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="删除" class="btn btn-default" />
+        </div>
+    }
+</div>

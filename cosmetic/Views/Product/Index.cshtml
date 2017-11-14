@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Cosmetic.Models.Product>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "商品管理";
+    var type = Comm.GetType(User.Identity.GetUserId()) != Cosmetic.Enums.User.Normal;
+}
+<div class="productIndex">
+    @if (type)
+    {
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("添加产品", "Create")</li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    }
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Info)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Spec)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Unit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Release)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Spec)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Release)
+                </td>
+                <td>
+                    @if (type)
+                    {
+                        <span>
+                            @Html.ActionLink("编辑", "Edit", new { id = item.ID }) | 
+                            @Html.ActionLink("删除", "Delete", new { id = item.ID })
+                        </span>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("下单", "Details", "Product", new { id = item.ID }, null)
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @Html.PageList((PagedList.IPagedList)ViewBag.Page, Url.PageUrl())
+
+</div>

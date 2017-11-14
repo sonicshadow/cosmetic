@@ -1,0 +1,18 @@
+﻿@model Cosmetic.Models.UserProduct
+<tr>
+    <td>
+        <input type="text" value="@Model.Product.Name" disabled class="form-control number" />
+    </td>
+    <td>
+        <input type="text" value="@Model.Price" class="form-control price" />
+    </td>
+    <td>
+        <input type="number" value="@Model.Min" class="form-control min" />
+    </td>
+    <td>
+        <input type="number" value="@Model.TwiceMin" class="form-control twiceMin" />
+    </td>
+    <td>
+        <input type="button" value="编辑" class="btn btn-default edit" data-id="@Model.ID" />
+    </td>
+</tr>

@@ -1,0 +1,98 @@
+﻿@model Cosmetic.Models.ProductViewModel
+
+@{
+
+    ViewBag.Title = "下单";
+
+}
+<div class="productDetails">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("我的商品", "Index", "Product")</li>
+        <li class="active">@Model.Name</li>
+    </ol>
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Price)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Info, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Info)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Spec, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Spec)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Number)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Unit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static form-control-static">
+                @Html.DisplayFor(model => model.Unit)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Release, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Release)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                <span class="min">@Html.DisplayFor(model => model.Min)</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.UserPrice)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">下单数量</label>
+            <div class="col-md-10 form-control-static">
+                <input type="number" id="Count" class="form-control" value="@Model.Min" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 form-control-static">
+                <input type="button" id="order" value="下单" class="btn btn-default" />
+                @Html.ActionLink("返回", "Index", "Product", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/productDetails")
+}

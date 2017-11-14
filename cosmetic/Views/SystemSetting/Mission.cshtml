@@ -1,0 +1,50 @@
+﻿@model Cosmetic.Models.MissionCompile
+
+@{
+    bool isM = false;
+    var isMission = !bool.TryParse(Request["IsMission"],out isM);
+    ViewBag.Title = isMission ? "编辑任务" : "编辑联系我们";
+    var fileUpload = new Cosmetic.Models.FileUpload
+    {
+        Name = "ckupload",
+        Mode = Cosmetic.Models.FileUploadMode.ModalOnly,
+        AutoInit = false,
+        Max = 100
+    };
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">系统设置</a></li>
+    <li class="active">@(isMission ? "编辑任务" : "编辑联系我们")</li>
+</ol>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("IsMission", Request["IsMission"])
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-8 col-md-offset-2">
+                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2">
+                <input type="submit" value="保存" class="btn btn-default col-md-offset-2" />
+            </div>
+        </div>
+    </div>
+}
+@Html.EditorFor(model => fileUpload)
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval", "~/bundles/cloud")
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script>
+        var editor = CKEDITOR.replace('Value', { height: 300 });
+        editor.on("instanceReady", function () {
+            $(".cke_button__maximize").click(function (e) {
+                $(".alertList").toggleClass("fixed-ckeditor-max");
+            });
+        })
+    </script>
+}

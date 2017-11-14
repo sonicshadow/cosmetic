@@ -1,0 +1,51 @@
+﻿@model Cosmetic.Models.Account
+
+@{
+    ViewBag.Title = "删除资金记录";
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">资金管理</a></li>
+    <li class="active">删除</li>
+</ol>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountKind.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountKind.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Remark)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remark)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="删除" class="btn btn-default" />
+        </div>
+    }
+</div>

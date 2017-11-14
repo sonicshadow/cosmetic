@@ -1,0 +1,302 @@
+﻿/*系统参数*/
+@font-family: "微软雅黑";
+@font-color-1: #3c3c3c;
+@font-color-5: #fff;
+@font-color-grey01: #666;
+@font-color-grey02: #5E6D82;
+@font-color-grey03: #99A9BF;
+@font-color-orange01: #ff6441;
+@font-color-error: #FF4343;
+
+@font-color-black01: #3c3c3c;
+@font-color-black02: #524f46;
+@font-color-home: #282828;
+@font-color-white: #fff;
+@font-color-brown01: #624631;
+@font-color-brown02: #ab836a;
+@font-color-pink: #ed96b6;
+
+@font-size-1: 12px;
+@font-size-2: 14px;
+@font-size-3: 16px;
+@font-size-4: 18px;
+@font-size-5: 20px;
+@font-size-6: 24px;
+@font-size-7: 36px;
+
+@color-bg-main: #428bca;
+
+@bg-color-black01: #38362a;
+@bg-color-grey01: #c6c6c6;
+@bg-color-white: #fff;
+@bg-color-red01: #b6222e;
+@bg-color-pink: #e8e5ef;
+
+
+@color-main: #d72227;
+@color-bg-main: #428bca;
+@color-bg-disabled: #EFF2F7;
+@color-bg-grey01: #ebeef1;
+@color-bg-grey02: #e0e0e0;
+@color-bg-orange01: #ae4d3b;
+@color-bg-orange02: #fef7f6;
+@color-bg-orange03: #FF6441;
+
+@user-color-main: #342a32;
+
+@border-color: #eeeeee;
+@border-color-bc: #ddd;
+@border-color-input: #C0CCDA;
+@border-color-inputFocus: #FF6441;
+@border-color-disabled: #D3DCE6;
+@border-color-error: #FF4949;
+@border: 1px solid @border-color;
+@border-bc: 1px solid @border-color-bc;
+
+@screen-xs: 320px;
+@screen-sm: 750px;
+@screen-md: 970px;
+@screen-1024: 1024px;
+@screen-1280: 1280px;
+
+@z-index-bottom: 100;
+@z-index-mid: 1000;
+@z-index-top: 10000;
+
+@t: transparent;
+@initial: initial;
+
+/*bs样式*/
+@text-muted: #777;
+@text-primary: #337AB7;
+@text-success: #3C763D;
+@text-info: #31708F;
+@text-warning: #8A6D3B;
+@text-danger: #A94442;
+@navtop-bg: #edecea;
+@bg-primary: #337AB7;
+@bg-success: #DFF0D8;
+@bg-info: #D9EDF7;
+@bg-warning: #FCF8E3;
+@bg-danger: #F2DEDE;
+
+@gray-base: #000;
+@gray-darker: lighten(@gray-base, 13.5%); // #222
+@gray-dark: lighten(@gray-base, 20%); // #333
+@gray: lighten(@gray-base, 33.5%); // #555
+@gray-light: lighten(@gray-base, 46.7%); // #777
+@gray-lighter: lighten(@gray-base, 93.5%); // #eee
+
+@brand-primary: darken(#428bca, 6.5%); // #337ab7
+@brand-success: #5cb85c;
+@brand-info: #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger: #d9534f;
+
+/*通用方法*/
+.block-mid(@p: 50%) {
+    position: absolute;
+    top: @p;
+    left: @p;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.block-mid-2() {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+.block-horizontal-mid(@p: 50%) {
+    position: absolute;
+    left: @p;
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.block-vertical-mid(@p: 50%) {
+    position: absolute;
+    top: @p;
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.one-line-vertical-mid(@h) {
+    height: @h;
+    line-height: @h;
+}
+
+.clean-ul() {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.clearfix() {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+.rectangle(@w,@h) {
+    width: @w;
+    height: @h;
+}
+
+
+.square(@size) {
+    .rectangle(@size,@size);
+}
+
+.clean-a() {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover, &:active, &:focus {
+        color: inherit;
+    }
+}
+
+.clean-input() {
+    &:focus {
+        outline: none;
+    }
+}
+
+.buttomStyle(@w: 0,@h: 0,@bc: @color-bg-orange03,@c: @font-color-5,@border-c: @color-bg-orange03,@br: 0,@fs: 14px,@hc: #ff5233,@hcol: @font-color-5) {
+    padding: @h @w;
+    background-color: @bc;
+    color: @c;
+    border: 1px solid @border-c;
+    border-radius: @br;
+    font-size: @fs;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    text-decoration: none;
+    .clean-input();
+
+    &:active {
+        box-shadow: inset 0 3px 10px rgba(0, 0, 0, .125);
+
+        &:hover {
+            background-color: @hc;
+            border-color: @hc;
+            color: @hcol;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &:hover, &.active {
+        background-color: @hc;
+        border-color: @hc;
+        color: @hcol;
+    }
+
+    &:disabled {
+        background-color: #c5c5c5;
+        color: #e8e8e8;
+        border-color: #c5c5c5;
+    }
+}
+
+.step {
+    .progress-wrap {
+        margin: 0 auto;
+        height: 50px;
+
+        li {
+            list-style: none;
+            float: left;
+            width: 300px;
+            height: 30px;
+            position: relative;
+
+            &.active {
+                .progress-line {
+                    background-color: @color-bg-main;
+                }
+
+                .progress-content {
+                    .progress-number {
+                        background-color: @color-bg-main;
+                    }
+                }
+            }
+
+            .progress-line {
+                background-color: #b9b9b9;
+                position: absolute;
+                height: 5px;
+                width: 100%;
+                top: 10px;
+                left: 50%;
+            }
+
+            .progress-content {
+                position: absolute;
+                text-align: center;
+                .block-mid-2();
+
+                .progress-number {
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    line-height: 25px;
+                    color: #fff;
+                    border-radius: 50%;
+                    font-weight: bold;
+                    background-color: #b9b9b9;
+                    .block-mid-2();
+                }
+
+                .progress-text {
+                    position: relative;
+                    top: 25px;
+                }
+            }
+        }
+    }
+}
+
+.btn_a {
+    color: #428bca;
+    border: 0px;
+    background-color: rgba(255, 255, 255, 0.00);
+    padding: 0;
+
+    &:hover {
+        text-decoration: underline;
+        color: #2a6496;
+    }
+}
+
+.userIncomeIndex{
+    table{
+        th{
+            text-align:center;
+        }
+    }
+}

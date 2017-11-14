@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Cosmetic.Models.AccountViewModel>
+
+@{
+    ViewBag.Title = "帐户资金进出结存报表";
+    var obj = new { trader=Request["trader"], bankName=Request["bankName"], bandCard=Request["bandCard"], start = Request["start"], end = Request["end"] };
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">帐户资金进出结存报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a target="_blank" href="@($"{Url.Action("AccountExport",obj)}")">导出</a></li>
+                <li><a href="@($"{Url.Action("BankCapital",obj)}")">银行资金总额分布报表</a></li>
+            </ul>
+            @using (Html.BeginForm("Account", "Report", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                <div class="form-group">
+                    <input name="trader" value="@Request["trader"]" type="text" class="form-control" placeholder="交易人" />
+                </div>
+                <div class="form-group">
+                    <input name="bankName" value="@Request["bankName"]" type="text" class="form-control" placeholder="银行" />
+                </div>
+                <div class="form-group">
+                    <input name="bandCard" value="@Request["bandCard"]" type="text" class="form-control" placeholder="帐户" />
+                </div>
+                <div class="form-group">
+                    <input name="start" value="@Request["start"]" type="text" class="form-control" placeholder="开始时间" />
+                </div>
+                <div class="form-group">
+                    <input name="end" value="@Request["end"]" type="text" class="form-control" placeholder="结束时间" />
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            }
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountKind)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trader)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>@Html.DisplayNameFor(model=>model.Amount)</th>
+            <th>
+                公司入帐银行
+            </th>
+            <th>
+                公司入帐帐户
+            </th>
+            <th>
+                公司出帐银行
+            </th>
+            <th>
+                公司出帐帐户
+            </th>
+            <th>@Html.DisplayNameFor(model => model.IsDelete)</th>
+            <th>@Html.DisplayNameFor(model => model.Remark)</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        string text = item.Total <= 0 ? "style=color:red;" : "";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountKind.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trader)
+            </td>
+            <td>
+                @if (item.Rank.HasValue)
+                {
+                    @item.Rank.GetDisplayName();
+                }
+            </td>
+
+            <td @text>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            @if (item.AccountKind.Type == Cosmetic.Enums.AccountKindType.Pay)
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankCard)
+            </td>
+            @if (item.AccountKind.Type != Cosmetic.Enums.AccountKindType.Pay)
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @(item.IsDelete?"是":"否")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>公司帐户结存</td>
+            <td></td>
+            <td></td>
+            <td>
+                @Model.Where(s=>!s.IsDelete).Sum(s => s.Total)
+            </td>
+            <td>
+                @if (Model.Count() > 0)
+                {
+                    @Model.Last().Amount
+                }
+                else
+                {
+                    <span>0</span>
+                }
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+
+@section Scripts {
+    <script>
+        $("[name=start],[name=end]").date();
+        new searchUser({ target: "[name=trader]" });
+    </script>
+}

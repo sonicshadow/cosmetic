@@ -1,0 +1,189 @@
+﻿@model Cosmetic.Models.UserSettingModel
+
+@{
+    ViewBag.Title = "添加第一张订单";
+    string c = "";
+    string check = "checked";
+    if (Model.UserProduct != null && Model.UserProduct.Count > 0)
+    {
+        if (Model.UserProduct.FirstOrDefault().User.Rank == Cosmetic.Enums.UserType.Retailer)
+        {
+            c = "hidden";
+            check = "";
+        }
+    }
+}
+<div class="UserSetting">
+    <ul class="breadcrumb">
+        <li>@Html.ActionLink("用户管理", "Index", "User")</li>
+        <li class="active">用户添加</li>
+    </ul>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="col-md-10 col-md-offset-2">
+                <div class="step">
+                    <ul class="progress-wrap">
+                        <li class="active">
+                            <div class="progress-line"></div>
+                            <div class="progress-content">
+                                <span class="progress-number">1</span>
+                                <span class="progress-text">填写用户信息</span>
+                            </div>
+                        </li>
+                        <li class="active">
+                            <div class="progress-line"></div>
+                            <div class="progress-content">
+                                <span class="progress-number">2</span>
+                                <span class="progress-text">添加第一张订单</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="progress-content">
+                                <span class="progress-number">3</span>
+                                <span class="progress-text">完成</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserProduct, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th>首批最低进货数量</th>
+                                <th>二次最低进货数量</th>
+                                <th>价格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.UserProduct)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(model => item.ID)
+                                        @Html.DisplayFor(model => item.Product.Name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => item.Min, new { htmlAttributes = new { @class = "form-control" } })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => item.TwiceMin, new { htmlAttributes = new { @class = "form-control" } })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => item.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Order.ProductID, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.HiddenFor(s => s.Order.UserID)
+                    @Html.DropDownListFor(model => model.Order.ProductID, (List<SelectListItem>)ViewBag.ProductList, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">批发数量</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Order.Count, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">批发单价</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Order.Price, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Order.Total, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Order.Total, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            @if (Model.UserProduct != null && Model.UserProduct.Count > 0)
+            {
+                if (string.IsNullOrWhiteSpace(Model.UserProduct.FirstOrDefault().User.Parent))
+                {
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">收款人信息</label>
+                        <div class="col-md-10">
+                            @Html.DropDownList("PayeeID", (List<SelectListItem>)ViewBag.Payee, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">手续费</label>
+                        <div class="col-md-10">
+                            <input value="0" type="text" class="form-control" id="fee" />
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="@c">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">从推荐人购买一件商品</label>
+                    <div class="col-md-10">
+                        <input type="checkbox" name="saleOrder" id="saleOrder" @check />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">零售单价</label>
+                    <div class="col-md-10">
+                        <input type="text" value="" name="salePrice" id="salePrice" class="form-control" />
+                    </div>
+                </div>
+
+
+                @if (Model.UserProduct != null && Model.UserProduct.Count > 0)
+                {
+                    if (string.IsNullOrWhiteSpace(Model.UserProduct.FirstOrDefault().User.Recommend))
+                    {
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">零售商品的收款人信息</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("salePayeeID", (List<SelectListItem>)ViewBag.Payee, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">零售商品的手续费</label>
+                            <div class="col-md-10">
+                                <input value="0" type="text" class="form-control" id="salefee" />
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" id="setting" value="保存" class="btn btn-default" />
+                    @Html.ActionLink("取消", "Index", "User", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        </div>
+
+                }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/register")
+}

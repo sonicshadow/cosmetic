@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "公司股东分红报表";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">公司股东分红报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a data-toggle="modal" data-target="#myModal" style="cursor:pointer;">预留公司流动资金</a></li>
+                <li><a id="gudongfenhong" style="cursor:pointer;">公司股东分红</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                项次
+            </th>
+            <th>
+                项目
+            </th>
+            <th>
+                金额
+            </th>
+            <th>
+                说明
+            </th>
+        </tr>
+    </thead>
+    <tr>
+        <td></td>
+        <td>合计利润</td>
+        <td><span id="profit">@ViewBag.Profit</span></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>预留公司流动资金</td>
+        <td><span id="amount"></span></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>可分红金额</td>
+        <td><span id="total">@ViewBag.Profit</span></td>
+        <td></td>
+    </tr>
+</table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">预留公司流动资金</h4>
+            </div>
+            <div class="modal-body">
+                <div class="zijinalert"></div>
+               <input type="text"  class="form-control" id="editAmount" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="sure">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/shareHolder")
+}

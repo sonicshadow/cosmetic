@@ -1,0 +1,222 @@
+﻿@model Cosmetic.Models.ReturnViewModel
+
+@{
+    ViewBag.Title = "换货订单";
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("换货管理", "Index")</li>
+    <li class="active">换货订单</li>
+</ol>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Order.Code, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Order.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OldProduct, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.OldProduct.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OldProduct.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Order.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Order.Count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Order.Count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Order.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Order.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Order.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Order.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Order.Total, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Order.Total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewProduct, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.NewProduct.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NewProduct.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10 form-control-static">
+                @Html.DisplayFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (Model.CheckState == Cosmetic.Enums.CheckState.NoCheck)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 form-control-static">
+                    <input type="button" data-result="true" value="通过" class="btn btn-default result" />
+                    <input type="button" data-result="false" value="不通过" class="btn btn-default result" />
+                    @Html.ActionLink("返回", "Index", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.CheckState, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Model.CheckState.GetDisplayName()
+                    @Html.ValidationMessageFor(model => model.CheckState, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CheckTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.CheckTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CheckTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CheckUser, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.CheckUser, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CheckUser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            if (Model.PayTime.HasValue)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PayTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 form-control-static">
+                        @Html.DisplayFor(model => model.PayTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PayTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            if (Model.ReceiptTime.HasValue)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceiptTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 form-control-static">
+                        @Html.DisplayFor(model => model.ReceiptTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ReceiptTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 form-control-static">
+                    @if (Model.CheckState == Cosmetic.Enums.CheckState.Pass)
+                    {
+                        if (!Model.PayTime.HasValue)
+                        {
+                        <input type="button" value="收款" class="btn btn-default" data-toggle="modal" data-target="#myModal" />
+                        }
+                        if (!Model.ReceiptTime.HasValue)
+                        {
+                        <input type="button" value="收货" id="Receipt" class="btn btn-default" />
+                        }
+                    }
+                    @Html.ActionLink("返回", "Index", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (Model.CheckState == Cosmetic.Enums.CheckState.Pass && !Model.PayTime.HasValue)
+{
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">收款信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ReceiptAlert"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="Express" class="col-sm-2 control-label">收款人</label>
+                            <div class="col-sm-10 form-control-static">
+                                @Html.DropDownList("payeeID", (List<SelectListItem>)ViewBag.Payee, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Express" class="col-sm-2 control-label">手续费</label>
+                            <div class="col-sm-10 form-control-static">
+                                <input type="number" id="Fee" value="0" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="Receivables" class="btn btn-primary">确认收款</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval", "~/bundles/returns")
+}

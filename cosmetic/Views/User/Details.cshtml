@@ -1,0 +1,104 @@
+﻿@model Cosmetic.Models.UserViewModel
+
+@{
+    ViewBag.Title = "用户信息";
+    string c = "userEdit";
+    if (ViewBag.Layout)
+    {
+        Layout = "~/Views/Shared/_LayoutHome.cshtml";
+        c = "userEdithome";
+    }
+}
+<div class="@c">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("用户信息", "Details")</li>
+        <li class="active">@Model.RealName</li>
+    </ol>
+    <div class="title">
+        <h2 class="text-center">完善个人信息</h2>
+        <hr />
+    </div>
+    <div class="form-horizontal">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+            <div class="form-group">
+                @Html.LabelFor(model => model.RealName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    <input type="text" disabled="disabled" class="form-control" value="@Model.RealName" />
+                    @Html.HiddenFor(model => model.RealName)
+                    @Html.ValidationMessageFor(model => model.RealName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDCard, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @if (string.IsNullOrWhiteSpace(Model.IDCard))
+                    {
+                        @Html.EditorFor(model => model.IDCard, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    else
+                    {
+                        <input type="text" disabled="disabled" class="form-control" value="@Model.IDCard" />
+                        @Html.HiddenFor(model => model.IDCard)
+                    }
+                    @Html.ValidationMessageFor(model => model.IDCard, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Bank, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.EditorFor(model => model.Bank, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankCard, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.EditorFor(model => model.BankCard, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BankCard, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.EditorFor(model => model.BankCode, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="text-danger">如不知道收款网点联行号，可到http://www.lianhanghao.com/查找后输入。</span><br />
+                    @Html.ValidationMessageFor(model => model.BankCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 form-control-static">
+                    @if (!ViewBag.Layout)
+                    {
+                        @Html.ActionLink("重置密码", "ResetPassword", "Account", null, new { @class = "btn btn-default" })
+                    }
+                    <input type="submit" value="保存" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

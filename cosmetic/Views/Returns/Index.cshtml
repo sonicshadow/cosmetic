@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Cosmetic.Models.Return>
+
+@{
+    ViewBag.Title = "换货管理";
+    var paged = (PagedList.IPagedList)Model;
+    Cosmetic.Enums.CheckState tempState;
+    string selState = "所有状态";
+    int count = ViewBag.NoCheckCount;
+    if (Enum.TryParse(Request["state"], out tempState))
+    {
+        selState = tempState.GetDisplayName();
+    }
+}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("申请换货", "Create")</li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @selState
+                        @if (count > 0)
+                        {
+                            <span class="badge">@count</span>
+                        }
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Action("Index")">
+                                所有状态
+                            </a>
+                        </li>
+                        @foreach (Cosmetic.Enums.CheckState item in Enum.GetValues(typeof(Cosmetic.Enums.CheckState)))
+                        {
+                            <li>
+                                <a href="@Url.Action("Index",new {state= (int)item })">
+                                    @item.GetDisplayName()
+                                    @if (item == Cosmetic.Enums.CheckState.NoCheck && count > 0)
+                                    {
+                                        <span class="badge">@count</span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.User.RealName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.User.Rank)
+            </th>
+            <th>
+                用户名（电话号）
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.User.RealName)
+            </td>
+            <td>@item.Order.User.Rank.GetDisplayName()</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @item.CheckState.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptTime)
+            </td>
+            <td>
+                @Html.ActionLink($"{(item.CheckState == Cosmetic.Enums.CheckState.NoCheck ? "审核":"编辑")}", "Edit", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+@Html.PageList(paged, Url.PageUrl())

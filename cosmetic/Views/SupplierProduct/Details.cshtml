@@ -1,0 +1,267 @@
+﻿@model Cosmetic.Models.SupplierProductViewModel
+
+@{
+    ViewBag.Title = "采购订单详情";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">库存管理</a></li>
+    <li class="active">采购订单详情</li>
+</ol>
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Product.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SupplierID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Supplier.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CreateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.CreateTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CreateTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Send, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            <span class="send">
+                @Html.DisplayFor(model => model.Send, new { htmlAttributes = new { @class = "form-control" } })
+            </span>
+            @Html.ValidationMessageFor(model => model.Send, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsSendCount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            <span class="isSendCount">
+                @Html.DisplayFor(model => model.IsSendCount, new { htmlAttributes = new { @class = "form-control" } })
+            </span>
+            @Html.ValidationMessageFor(model => model.IsSendCount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Remaining, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            <span class="remaining">
+                @Html.DisplayFor(model => model.Remaining, new { htmlAttributes = new { @class = "form-control" } })
+            </span>
+            @Html.ValidationMessageFor(model => model.Remaining, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SendOutCount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.SendOutCount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SendOutCount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            @Html.DisplayFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SendTotal, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            <span class="sendTotal">
+                @Html.DisplayFor(model => model.SendTotal, new { htmlAttributes = new { @class = "form-control" } })
+            </span>
+            @Html.ValidationMessageFor(model => model.SendTotal, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsSendTotal, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 form-control-static">
+            <span class="isSendTotal">
+                @Html.DisplayFor(model => model.IsSendTotal, new { htmlAttributes = new { @class = "form-control" } })
+            </span>
+            @Html.ValidationMessageFor(model => model.IsSendTotal, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @if (Model.SendOutCount != Model.Count)
+            {
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal"
+                        data-type="@Cosmetic.Enums.StockType.Overage" data-whatever="盘盈">
+                    盘盈
+                </button>
+            }
+            @if (Model.Remaining > 0)
+            {
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal"
+                        data-type="@Cosmetic.Enums.StockType.Loss" data-whatever="盘亏">
+                    盘亏
+                </button>
+            }
+            @if (Model.IsSendTotal > 0)
+            {
+                <input type="button" class="btn btn-default payment" data-toggle="modal" data-target="#payment" value="付款" />
+            }
+            @if (Model.IsSendCount > 0)
+            {
+                <input type="button" class="btn btn-default sendbtn" data-toggle="modal" data-target="#send" value="收货" />
+            }
+        </div>
+    </div>
+</div>
+
+@*盘盈亏*@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="exampleModalAlert"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-2">数量</label>
+                        <div class="col-sm-10 form-control-static">
+                            <input type="text" class="form-control col-md-10" id="sp_count">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-2">备注</label>
+                        <div class="col-sm-10 form-control-static">
+                            <textarea class="form-control" rows="5" id="remark"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="sp_edit" class="btn btn-primary" data-type="">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*付款*@
+@if (Model.IsSendTotal > 0)
+{
+    <div class="modal fade" id="payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">付款</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="PayeeAlert"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label col-md-2">金额</label>
+                            <div class="col-sm-10 form-control-static">
+                                <input type="text" class="form-control col-md-10" value="@Model.IsSendTotal" id="sp_total">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label col-md-2">付款人</label>
+                            <div class="col-sm-10 form-control-static">
+                                @Html.DropDownList("PayeeID", (List<SelectListItem>)ViewBag.Payee, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="sp_editpay" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    @*收货*@
+    @if (Model.IsSendCount > 0)
+    {
+        <div class="modal fade" id="send" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">收货</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ReceiptAlert"></div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label col-md-2">数量</label>
+                                <div class="col-sm-10 form-control-static">
+                                    <input type="text" value="@Model.IsSendCount" class="form-control col-md-10" id="sp_sendCount">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" id="sp_editcount" class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval", "~/bundles/supplierProductIndex")
+    }

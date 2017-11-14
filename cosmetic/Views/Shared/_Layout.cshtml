@@ -1,0 +1,144 @@
+﻿
+<!DOCTYPE html>
+@using Microsoft.AspNet.Identity;
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>@ViewBag.Title - 后台管理</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bundles/datetimepicker/css")
+    <meta name="description" content="后台管理" />
+    @{
+        Func<string, string> hidSidebar = s =>
+        {
+            var roles = s.Split(',').Where(x => !string.IsNullOrWhiteSpace(x));
+            return roles.Any(x => User.IsInRole(x)) ? $"" : $"hidden";
+        };
+        var type = Comm.GetType(User.Identity.GetUserId());
+    }
+</head>
+<body class="layoutBackground">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("深圳特强俊颜化妆品有限公司", "Index", "Order", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="fluid">
+        <div id="sidebar" class="sidebar">
+            <ul class="nav nav-sidebar">
+                @if (type != Cosmetic.Enums.User.Normal)
+                {
+                    <li class="@hidSidebar(SysRole.UserManageRead)">
+                        <a href="@Url.Action("Index", "InsideUsers")" title="管理员管理">管理员管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.SupplierManageRead)">
+                        <a href="@Url.Action("Index", "Supplier")" title="供应商管理">供应商管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.ProductManageRead)">
+                        <a href="@Url.Action("Index", "Product")" title="商品管理">商品列表</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.UserManageRead)">
+                        <a href="@Url.Action("Index", "User")" title="用户管理">用户管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.OrderManageRead)">
+                        <a href="@Url.Action("Index", "Order")" title="订单管理">订单管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.SupplierManageRead)">
+                        <a href="@Url.Action("Index", "Staffs")" title="员工管理">员工管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.PayeeManageRead)">
+                        <a href="@Url.Action("Index", "PayeeManage")" title="公司账号管理">银行帐户管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.AccountManageRead)">
+                        <a href="@Url.Action("Index", "AccountManage")" title="资金记录">资金记录</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.MissionManageRead)">
+                        <a href="@Url.Action("Index", "Mission")" title="任务管理">任务管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.StockManageRead)">
+                        <a href="@Url.Action("Index", "SupplierProduct")" title="库存管理">库存管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.SystemSettingRead)">
+                        <a href="@Url.Action("Index", "SystemSetting")" title="系统设置">系统设置</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.UserIncomeRead)">
+                        <a href="@Url.Action("Index", "UserIncome", new { isPay=false})" title="收入管理">奖励管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.ReportRead)">
+                        <a href="@Url.Action("Index", "Report")" title="报表管理">报表管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.NoticesRead)">
+                        <a href="@Url.Action("Index", "Notices")" title="公告管理">公告管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.DeliverRead)">
+                        <a href="@Url.Action("Check", "DeliverHistory",new { checkState=Cosmetic.Enums.CheckState.NoCheck})" title="发货审核">发货审核</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.ReturnRead)">
+                        <a href="@Url.Action("Index", "Returns",new { state= Cosmetic.Enums.CheckState.NoCheck })" title="退货管理">换货管理</a>
+                    </li>
+                    <li class="@hidSidebar(SysRole.ReceivablesRead)">
+                        <a href="@Url.Action("Check", "AccountManage",new { check= Cosmetic.Enums.CheckState.NoCheck })" title="收款审核">收款审核</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Index", "Order")" title="订单管理">订单管理</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("UserIndex", "UserIncome",new { ispay=false})" title="收入管理">直推奖</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Mission")" title="任务管理">我的任务</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Product")" title="商品管理">购买商品</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Team","UserProduct")" title="我的下级">我的下级</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("UserIndex", "Stock")" title="库存管理">我的库存</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("UserIndex", "AccountManage")" title="资金记录">资金记录</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="main">
+            <div class="alertList"></div>
+            @RenderBody()
+        </div>
+
+    </div>
+    <div class="mask hidden"></div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui/js");
+    @Scripts.Render("~/bundles/datetimepicker/js")
+    @Scripts.Render("~/bundles/comm")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(function () {
+            $("#sidebar a[title='@ViewBag.Sidebar']").parent().addClass("active");
+        })
+    </script>
+</body>
+</html>
+

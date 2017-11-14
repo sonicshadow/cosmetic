@@ -1,0 +1,258 @@
+﻿@model IEnumerable<Cosmetic.Models.UserList>
+
+@{
+    ViewBag.Title = "用户管理";
+    var psge = (PagedList.IPagedList)Model;
+    int inactiveCount = ViewBag.InactiveCount;
+    Cosmetic.Enums.UserState tempState;
+    string selState = "所有状态";
+    if (Enum.TryParse<Cosmetic.Enums.UserState>(Request["state"], out tempState))
+    {
+        selState = tempState.GetDisplayName();
+    }
+    string selType = "所有级别";
+    Cosmetic.Enums.UserType tempType;
+    if (Enum.TryParse<Cosmetic.Enums.UserType>(Request["rank"], out tempType))
+    {
+        selType = tempType.GetDisplayName();
+    }
+}
+<div class="UserIndex">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("添加用户", "Register", "Account")</li>
+                    <li>@Html.ActionLink("分红权调置", "Index", "Holder")</li>
+                    <li>@Html.ActionLink("修改记录", "Modify")</li>
+                    <li>@Html.ActionLink("查询用户团队", "GetTeam")</li>
+                    <li>@Html.ActionLink("导出", "IndexExport", new { state = Request["state"], page = Request["page"] })</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @selState
+                            @if (inactiveCount > 0)
+                            {
+                                <span class="badge">@inactiveCount</span>
+                            }
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("Index",new {type=Request["type"] })">
+                                    所有状态
+                                </a>
+                            </li>
+                            @foreach (Cosmetic.Enums.UserState item in Enum.GetValues(typeof(Cosmetic.Enums.UserState)))
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index",new {State= (int)item,rank=Request["rank"] })">
+                                        @item.GetDisplayName()
+                                        @if (item == Cosmetic.Enums.UserState.Inactive && inactiveCount > 0)
+                                        {
+                                            <span class="badge">@inactiveCount</span>
+                                        }
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @selType <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("Index")">
+                                    所有级别
+                                </a>
+                            </li>
+                            @foreach (Cosmetic.Enums.UserType item in Enum.GetValues(typeof(Cosmetic.Enums.UserType)))
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index",new {State=Request["state"], rank= (int)item })">
+                                        @item.GetDisplayName()
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                {
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" value="@Request["username"]" class="form-control" placeholder="会员号">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="parentname" id="parentname" value="@Request["parentname"]" class="form-control" placeholder="订单发货人">
+                    </div>
+                  <button type="submit" class="btn btn-default">查询</button>
+                }
+            </div>
+        </div>
+    </nav>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rank)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RealName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Recommend)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Parent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IDCard)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Bank)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankCard)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegisterDateTime)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @item.Rank.GetDisplayName()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RealName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommend)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Parent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bank)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterDateTime)
+                </td>
+                <td>
+                    @switch (item.UserState)
+                    {
+                        case Cosmetic.Enums.UserState.Inactive:
+                            {
+                    <span>
+                        @Html.ActionLink("激活", "UserSetting", "Account", new { id = item.ID }, null)
+                        |
+                    </span>
+                            }
+                            break;
+                        case Cosmetic.Enums.UserState.Actived:
+                            {
+                    <span>
+                        <button type="button" class="btn_a" data-toggle="modal"
+                                data-target="#exampleModal" data-whatever="@item.ID">
+                            冻结账号
+                        </button>
+                        |
+                    </span>
+                            }
+                            break;
+                        case Cosmetic.Enums.UserState.Frozen:
+                            {
+                    <span>
+                        <button type="button" class="btn_a lockinAbled" data-id="@item.ID">
+                            解除冻结
+                        </button>
+                        <button type="button" class="btn_a hidden" data-toggle="modal"
+                                data-target="#exampleModal" data-whatever="@item.ID">
+                            冻结账号
+                        </button>
+                        |
+                    </span>
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    @Html.ActionLink("编辑", "Edit", new { id = item.ID})
+                </td>
+            </tr>
+        }
+        @if (psge.IsLastPage)
+        {
+            <tfoot>
+                <tr>
+                    <td>合计</td>
+                    <td>
+                        @ViewBag.Count 人
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        }
+    </table>
+
+    @Html.PageList(psge, Url.PageUrl())
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">冻结账号</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modalalert"></div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-3  form-control-static">代替新的会员号</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="reusername" placeholder="代替新的会员号">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="enabled" data-id="" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/userIndex")
+}

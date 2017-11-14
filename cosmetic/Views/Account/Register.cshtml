@@ -1,0 +1,116 @@
+﻿@model Cosmetic.Models.RegisterViewModel
+@{
+    ViewBag.Title = "用户添加";
+    SelectList selBank = new SelectList(Cosmetic.Bll.SystemSettings.Banks);
+}
+<div class="register">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("用户管理", "Index", "User")</li>
+        <li class="active">用户添加</li>
+    </ol>
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-2">
+            <div class="step">
+                <ul class="progress-wrap">
+                    <li class="active">
+                        <div class="progress-line"></div>
+                        <div class="progress-content">
+                            <span class="progress-number">1</span>
+                            <span class="progress-text">填写用户信息</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="progress-line"></div>
+                        <div class="progress-content">
+                            <span class="progress-number">2</span>
+                            <span class="progress-text">添加第一张订单</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="progress-content">
+                            <span class="progress-number">3</span>
+                            <span class="progress-text">完成</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <p></p>
+        </div>
+    </div>
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Bank, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.Bank, selBank, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BankCard, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BankCard, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BankCard, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.BankCode, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BankCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BankCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Recommend, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Recommend, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Recommend, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Type, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(m => m.Type, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="submit" class="btn btn-default" value="下一步" />
+            </div>
+        </div>
+    }
+</div>
+@section Scripts{
+    <script>
+        new searchUser({ target: "#Recommend" });
+    </script>
+}

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Cosmetic.Models.AccountViewModel>
+
+@{
+    ViewBag.Title = "帐户资金进出结存报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountKind)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trader)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>
+                公司入帐银行
+            </th>
+            <th>
+                公司入帐帐户
+            </th>
+            <th>
+                公司出帐银行
+            </th>
+            <th>
+                公司出帐帐户
+            </th>
+            <th>@Html.DisplayNameFor(model => model.IsDelete)</th>
+            <th>@Html.DisplayNameFor(model => model.Remark)</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        string text = item.Total <= 0 ? "style=color:red;" : "";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountKind.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trader)
+            </td>
+            <td>
+                @if (item.Rank.HasValue)
+                {
+                    @item.Rank.GetDisplayName();
+                }
+            </td>
+            <td @text>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            @if (item.AccountKind.Type == Cosmetic.Enums.AccountKindType.Pay)
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.BankCard)
+            </td>
+            @if (item.AccountKind.Type != Cosmetic.Enums.AccountKindType.Pay)
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @(item.IsDelete ? "是" : "否")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>公司帐户结存</td>
+            <td></td>
+            <td></td>
+            <td>
+                @Model.Where(s => !s.IsDelete).Sum(s => s.Total)
+            </td>
+            <td x:num x:fmla="@($"=SUM(F{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

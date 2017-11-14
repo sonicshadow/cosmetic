@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Cosmetic.Models.UserList>
+
+@{
+    ViewBag.Title = "所有用户";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RealName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegisterDateTime)
+            </th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @item.Rank.GetDisplayName()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RealName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Recommend)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Parent)
+        </td>
+        <td style="@Comm.ExcelString">
+            @Html.DisplayFor(modelItem => item.IDCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bank)
+        </td>
+        <td style="@Comm.ExcelString">
+            @Html.DisplayFor(modelItem => item.BankCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegisterDateTime)
+        </td>
+    </tr>
+}
+
+</table>

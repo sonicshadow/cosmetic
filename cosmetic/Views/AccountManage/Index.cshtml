@@ -1,0 +1,192 @@
+﻿@using Cosmetic.Models
+@model IEnumerable<Cosmetic.Models.Account>
+
+@{
+    ViewBag.Title = "资金记录";
+    List<AccountKind> allKind = ViewBag.AllKind;
+    var eKTypes = (Cosmetic.Enums.AccountKindType[])Enum.GetValues(typeof(Cosmetic.Enums.AccountKindType));
+    var paged = (PagedList.IPagedList<Cosmetic.Models.Account>)Model;
+    var p = new Dictionary<string, object>();
+    p.Add("page", "{PageIndex}");
+    string reqFilter = Request["Filter"];
+
+    if (!string.IsNullOrWhiteSpace(reqFilter))
+    {
+        p.Add("filter", reqFilter);
+    }
+    int iType;
+    int? selectedKind = null;
+    string reqKind = "科目";
+    if (int.TryParse(Request["kind"], out iType))
+    {
+        var temp = allKind.FirstOrDefault(s => s.ID == iType);
+        reqKind = temp?.Name ?? "科目";
+        if (temp != null)
+        {
+            selectedKind = iType;
+            p.Add("filter", reqFilter);
+        }
+    }
+    string pageUrl = $"{Url.Action("Index")}{p.ToParam("?")}";
+
+}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="@Url.Action("Index","AccountKinds")">科目管理</a></li>
+                <li><a href="@Url.Action("Transfer")">公司帐户银行相互转帐</a></li>
+                <li><a href="@Url.Action("Create")">添加资金记录</a></li>
+                <li>@Html.ActionLink("资金取消记录", "CancelModify")</li>
+                <li id="ddlKind" class="dropdown" data-kind="@selectedKind">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <x>@reqKind</x>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li data-id="0" data-name="科目"><a href="#">所有</a></li>
+                        @for (int i = 0; i < eKTypes.Length; i++)
+                        {
+                            var k = (Cosmetic.Enums.AccountKindType)eKTypes[i];
+                            foreach (var item in allKind.Where(s => s.Type == k))
+                            {
+                                <li data-id="@item.ID" data-name="@item.Name">
+                                    <a href="#">@item.Name</a>
+                                </li>
+                            }
+                            if (eKTypes.Length - 1 != i)
+                            {
+                                <li role="separator" class="divider"></li>
+                            }
+
+                        }
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input id="txtBandCard" type="text" class="form-control" placeholder="银行卡号" value="@Request["BandCard"]">
+                </div>
+                <div class="form-group">
+                    <input id="txtStart" type="text" class="form-control" placeholder="开始日期" value="@Request["Start"]">
+                </div>
+                <div class="form-group">
+                    <input id="txtEnd" type="text" class="form-control" placeholder="结束日期" value="@Request["End"]">
+                </div>
+                <button id="btnSearch" type="button" class="btn btn-default">搜索</button>
+            </div>
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fee)
+            </th>
+            <th>结存</th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountKindID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDelete)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+
+    @foreach (var item in Model)
+    {
+        string c = item.IsDelete ? "style=color:red;" : "";
+        <tr @c>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Totla)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BankAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BankName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.BankCard)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountKind.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+            <td>
+                @(item.IsDelete ? "是" : "否")
+            </td>
+            <td>
+                @if (item.AllowDelete && !item.IsDelete)
+                {
+                    <input type="button" value="取消" data-toggle="modal" data-target="#exampleModal" data-id="@item.ID" class="btn btn-default btn-xs" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">取消资金记录</h4>
+            </div>
+            <div class="modal-body">
+                <div id="cancelAlert"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">取消原因</label>
+                        <div class="col-sm-10 form-control-static">
+                            <textarea class="form-control" rows="5" id="remark"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-id="" id="cancel">确认取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.PageList(paged, pageUrl)
+
+@section Scripts{
+    @Scripts.Render("~/Bundles/accountManageIndex")
+}

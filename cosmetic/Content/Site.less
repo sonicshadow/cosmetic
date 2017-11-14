@@ -1,0 +1,335 @@
+﻿@import "less/base";
+@import "less/layoutBackground";
+@import "less/bootstrapEx";
+@import "less/uploader";
+@import "less/autocomplete";
+@import "less/imageResizeUploader";
+@import "less/nodata";
+@import "less/Views/register";
+@import "less/cloud";
+@import "less/Views/homeIndex";
+@import "less/Views/displayManageDetail";
+@import "less/Views/noticesDetail";
+@import "less/Views/login";
+@import "less/Views/userEdit";
+
+body, html {
+    font-family: @font-family !important;
+    color: @font-color-1;
+    -ms-overflow-style: scrollbar;
+}
+
+.paddingTb5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: @font-family !important;
+}
+
+.homeIndex-footer {
+    width: 100%;
+    background: url("./image/footer_bg.png") no-repeat center;
+    height: 329px;
+    background-size: cover;
+    .clearfix();
+
+    &.homeIndex-footer-style2 {
+        position: absolute;
+        bottom: 0;
+    }
+
+    .homeIndex-footer_logo {
+        background: url("./image/cosmeticIndex_footer_logo.png") no-repeat center;
+        height: 85px;
+        background-size: contain;
+        margin-top: 58px;
+    }
+
+    .homeIndex-footer_code {
+        text-align: center;
+        font-size: @font-size-3;
+        margin-top: 150px;
+    }
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+//遮罩
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: @z-index-top+-1;
+}
+
+.alertList {
+    top: 1px;
+    z-index: @z-index-top;
+    .block-mid-2();
+    text-align: center;
+
+    .alert {
+        margin-bottom: -1px;
+        border-radius: 0;
+    }
+
+    button {
+        margin-left: 10px;
+    }
+
+    &.fixed-ckeditor-max {
+        position: fixed;
+        width: 500px;
+    }
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.pd10 {
+    padding: 10px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.fs12 {
+    font-size: @font-size-1;
+}
+
+.fs14 {
+    font-size: @font-size-2;
+}
+
+.clearfix {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+.textOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cke_source {
+    max-width: none;
+}
+
+.font-color-grey01 {
+    color: @font-color-grey02;
+}
+
+.font-color-grey02 {
+    color: @font-color-grey03;
+}
+
+.bg-color-grey01 {
+    background-color: @color-bg-grey01;
+}
+
+.bg-color-grey02 {
+    background-color: @user-color-main;
+}
+
+.bg-color-white {
+    background-color: @font-color-5;
+}
+
+.pageModule {
+    .pagination {
+        > li {
+            > a {
+                color: @font-color-grey01;
+            }
+        }
+
+        > .active {
+            > a {
+                background-color: @color-bg-orange01;
+                border-color: @color-bg-orange01;
+                color: @font-color-5;
+            }
+        }
+    }
+}
+
+.selectRoleList {
+    .clean-ul();
+
+    > li {
+        clear: both;
+
+        > ul {
+            .clean-ul();
+            .clearfix();
+            margin-bottom: 10px;
+            margin-left: 20px;
+
+            > li {
+                float: left;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    label {
+        span {
+            position: relative;
+            top: -2px;
+        }
+    }
+}
+
+.inputModule {
+    width: 100%;
+    max-width: none;
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid @border-color-input;
+    padding: 0 10px;
+    .clean-input();
+    transition: 0.3s all;
+
+    &::-webkit-input-placeholder {
+        color: @font-color-grey03;
+    }
+
+    &:focus {
+        border: 1px solid @border-color-inputFocus;
+    }
+
+    &.errorInput {
+        border: 2px solid @border-color-error;
+    }
+}
+
+.CheckboxModule {
+    + label {
+        .rectangle(16px,16px);
+        border: 1px solid @border-color-input;
+        border-radius: 4px;
+        vertical-align: top;
+        margin-right: 8px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    &:checked {
+
+        + label {
+            border: none;
+            background: url("Images/ic_checkbox_checkd.png") no-repeat center;
+            background-size: 12px 10px;
+            background-color: @color-bg-orange03;
+        }
+    }
+
+    &:disabled {
+
+        + label {
+            background-color: @color-bg-disabled;
+            border-color: @border-color-disabled;
+        }
+
+        &:checked {
+            + label {
+                border: none;
+                background: url("Images/ic_checkbox_checkd.png") no-repeat center;
+                background-size: 12px 10px;
+                background-color: @border-color-disabled;
+            }
+        }
+    }
+}
+
+.textError {
+    &:before {
+        content: "*";
+    }
+
+    color: @font-color-error;
+}
+
+.overFlowText {
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.homeNav {
+    .container {
+        max-width: 980px !important;
+        padding: 0;
+
+        .collapse {
+            display: block;
+        }
+
+        .navbar-nav {
+            float: left;
+            margin: 0;
+
+            li {
+                a {
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                }
+            }
+        }
+
+        .navbar-right {
+            float: right;
+            margin: 0;
+        }
+    }
+}

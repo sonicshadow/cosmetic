@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Cosmetic.Models.ShareHolder>
+
+@{
+    ViewBag.Title = "公司股东分红报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Realname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Realname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.BankCard)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.IDCard)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                合计
+            </td>
+            <td x:num x:fmla="@($"=SUM(C2:C{Model.Count()+1})")">
+                0
+            </td>
+            <td x:num x:fmla="@($"=SUM(D2:D{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+
+</table>

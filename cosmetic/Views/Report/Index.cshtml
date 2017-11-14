@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "报表管理";
+}
+
+<table class="table table-hover table-striped table-autowidth">
+    <thead>
+        <tr>
+            <th>名称</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>当前所有用户库存报表</td>
+            <td><a href="@Url.Action("AllUserStore")">查看</a></td>
+        </tr>
+        <tr>
+            <td>销售报表</td>
+            <td><a href="@Url.Action("Sale")">查看</a></td>
+        </tr>
+        <tr>
+            <td>进货报表</td>
+            <td><a href="@Url.Action("Storage")">查看</a></td>
+        </tr>
+        <tr>
+            <td>未发货订单明细</td>
+            <td><a href="@Url.Action("SendOrder")">查看</a></td>
+        </tr>
+        <tr>
+            <td>销售利润报表</td>
+            <td><a href="@Url.Action("SalesProfit")">查看</a></td>
+        </tr>
+        <tr>
+            <td>公司利润报表</td>
+            <td><a href="@Url.Action("Profit")">查看</a></td>
+        </tr>
+        <tr>
+            <td>帐户资金进出结存报表</td>
+            <td><a href="@Url.Action("Account")">查看</a></td>
+        </tr>
+        <tr>
+            <td>公司股东分红报表</td>
+            <td><a href="@Url.Action("Share")">查看</a></td>
+        </tr>
+    </tbody>
+</table>
+

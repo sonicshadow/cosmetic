@@ -1,0 +1,7 @@
+﻿@model Cosmetic.Models.BaseFlow
+
+<input id="selectorName" type="hidden" name="selectorName" value="" />
+@foreach (var item in Model.Item.Selector)
+{
+    <input type="button" value="@item.Name" data-selector="@item.Name" class="btn btn-default" />
+}

@@ -1,0 +1,64 @@
+﻿@model Cosmetic.Models.LvUpOneToTop
+
+@{
+    ViewBag.Title = "任务";
+}
+<div class="misssionEdit">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("升级管理", "Index")</li>
+        <li class="active">@Model.Mission.User.RealName</li>
+    </ol>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input name="ID" id="ID" value="@Model.Mission.ID" type="hidden" />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Mission.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Model.Mission.State.GetDisplayName()
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Mission.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Mission.User.RealName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Mission.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Model.Mission.Type.GetDisplayName()
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Mission.CreateDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Mission.CreateDateTime, new { @class = "form-control" })
+                </div>
+            </div>
+
+            @if (Model.Mission.State == Cosmetic.Enums.MissionState.CompleteNoCheck || Model.Mission.State == Cosmetic.Enums.MissionState.StartNoCheck)
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-2">审批意见</label>
+                    <div class="col-md-10 form-control-static">
+                        <textarea id="Remark" name="Remark" cols="20" rows="5" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.DisplayFor(model => model)
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+@section Scripts {
+    <script src="~/Scripts/Views/misssionEdit.js"></script>
+}

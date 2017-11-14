@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Cosmetic.Models.StorageViewModel>
+
+@{
+    ViewBag.Title = "进货报表";
+    int count = Model.Sum(s=>s.Count);
+    decimal total = Model.Sum(s=>s.Total);
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">进货报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a target="_blank" href="@($"{Url.Action("StorageExport",new { from= Request["from"] ,to=Request["to"], start =Request["start"],end=Request["end"]})}")">导出</a></li>
+            </ul>
+            @using (Html.BeginForm("Storage", "Report", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                <div class="form-group">
+                    <input name="from" value="@Request["from"]" type="text" class="form-control" placeholder="供应商人（供货商）">
+                </div>
+                <div class="form-group">
+                    <input name="to" value="@Request["to"]" type="text" class="form-control" placeholder="进货人">
+                </div>
+                <div class="form-group">
+                    <input name="start" id="start" value="@Request["start"]" type="text" class="form-control" placeholder="开始时间" />
+                </div>
+                <div class="form-group">
+                    <input name="end" id="end" value="@Request["end"]" type="text" class="form-control" placeholder="结束时间" />
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            }
+        </div>
+    </div>
+</nav>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @(item.Rank.HasValue ? item.Rank.GetDisplayName() : null)
+            </td>
+            <td>
+                @(item.ParentRank.HasValue ? item.ParentRank.GetDisplayName() : null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>合计</td>
+            <td></td>
+            <td></td>
+            <td>
+                @count
+            </td>
+            <td></td>
+            <td>
+                @total
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script>
+        new searchUser({ target: "[name=to]" });
+        new searchUser({ target: "[name=from]" });
+        $("#start,#end").date();
+    </script>
+}

@@ -1,0 +1,134 @@
+﻿@model Cosmetic.Models.UserViewModel
+
+@{
+    ViewBag.Title = "编辑用户";
+    SelectList selBank = new SelectList(Cosmetic.Bll.SystemSettings.Banks);
+}
+
+<div class="userEdit">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("用户管理", "Index", "User")</li>
+        <li class="active">@Model.RealName</li>
+    </ol>
+    <input type="hidden" value="@ViewBag.Message" id="msg" />
+    <div class="form-horizontal">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+            <div class="form-group">
+                @Html.LabelFor(model => model.RealName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RealName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.RealName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDCard, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IDCard, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IDCard, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Bank, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Bank,selBank, new { @class = "form-control" } )
+                    @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankCard, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BankCard, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BankCard, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BankCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BankCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Parent, new { htmlAttributes = new { @class = "form-control", @placeholder = "上级发货人手机号" } })
+                    @Html.ValidationMessageFor(model => model.Parent, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Rank, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.Rank, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Rank, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Recommend, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Recommend, new { htmlAttributes = new { @class = "form-control", @placeholder = "推荐人手机号" } })
+                    @Html.ValidationMessageFor(model => model.Recommend, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="保存" class="btn btn-default" />
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserProduct, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => Model.UserProduct.FirstOrDefault().Product.Name)</th>
+                            <th>@Html.DisplayNameFor(model => Model.UserProduct.FirstOrDefault().Price)</th>
+                            <th>@Html.DisplayNameFor(model => Model.UserProduct.FirstOrDefault().Min)</th>
+                            <th>@Html.DisplayNameFor(model => Model.UserProduct.FirstOrDefault().TwiceMin)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.UserProduct)
+                        {
+                            @Html.EditorFor(model => item)
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/userEdit")
+}

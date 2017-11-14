@@ -1,0 +1,81 @@
+﻿@model Cosmetic.Models.DisplayViewModel
+
+@{
+    ViewBag.Title = "删除橱窗商品";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","SystemSetting")">系统管理</a></li>
+    <li><a href="@Url.Action("Index")">橱窗商品</a></li>
+    <li class="active">@Model.Title</li>
+</ol>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tag)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Images)
+        </dt>
+
+        <dd>
+            @foreach (var item in Model.FileUpload.Images)
+            {
+                var imgsrc = Url.ResizeImage(item, h: 70, w: 120);
+                <img title="@Path.GetFileName(item)" src="@imgsrc" />
+            }
+        </dd>
+        <dt>
+        </dt>
+
+        <dd>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m=>Model.ID)
+                <div class="form-actions no-color">
+                    <input type="submit" value="删除" class="btn btn-default" />
+                </div>
+            }
+        </dd>
+    </dl>
+</div>
+

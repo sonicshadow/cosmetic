@@ -1,0 +1,165 @@
+﻿@import "base";
+
+.cloud {
+    width: 532px !important;
+
+    .cloud-tool {
+        .clearfix();
+        border-bottom: @border-bc;
+        padding: 5px;
+        position: relative;
+
+
+        .btnCloudUpload {
+            float: right;
+        }
+    }
+
+    .cloud-upload {
+        .clean-ul();
+        .clearfix();
+        position: absolute;
+        top: 40px;
+        right: 0;
+
+        > li {
+            &.cloud-upload-item-temp {
+                display: none;
+            }
+
+            margin-top: 3px;
+            border: @border-bc;
+            .rectangle(200px,30px);
+            padding: 0 5px;
+            background-color: #fff;
+            position: relative;
+            z-index: @z-index-bottom;
+
+            .cloud-upload-title {
+                width: 170px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            .cloud-upload-remove {
+                position: absolute;
+                right: 5px;
+                top: 1px;
+                cursor: pointer;
+            }
+
+            .cloud-upload-progress {
+                @c: @border-color-bc;
+                border: 1px solid @c;
+                height: 5px;
+
+                > div {
+                    height: 3px;
+                    background-color: @c;
+                    max-width: 100%;
+                    -moz-transition: width ease(0.2s);
+                    -o-transition: width ease(0.2s);
+                    -webkit-transition: width ease(0.2s);
+                    transition: width ease(0.2s);
+                }
+            }
+        }
+    }
+
+    .cloud-list {
+        .clean-ul();
+        .clearfix();
+        padding-top: 10px;
+        height: 254px;
+
+        > li {
+            @imgsize: 80px;
+            float: left;
+            border: @border-bc;
+            width: @imgsize+5*2+2;
+            padding: 5px;
+            position: relative;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            user-select: none;
+
+            .cloud-list-item-img {
+                .square(@imgsize);
+                position: relative;
+                cursor: pointer;
+            }
+
+            &.cloud-list-item-temp {
+                display: none;
+            }
+
+            .cloud-list-item-mark {
+                display: none;
+                background-color: rgba(0, 0, 0, 0.5);
+                .square(@imgsize);
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 30px;
+                color: #fff;
+
+                > span {
+                    .block-mid();
+                    margin-top: -5px;
+                }
+            }
+
+            &.active {
+                .cloud-list-item-mark {
+                    display: block;
+                }
+            }
+
+            &:nth-child(5n+1) {
+                margin-right: 0;
+            }
+
+
+            .cloud-list-item-name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .cloud-page {
+        float: left;
+        margin-right: 5px;
+
+        [type=text] {
+            display: inline-block;
+            width: 3em;
+            height: 30px;
+            float: left;
+            margin-left: 5px;
+            border: none;
+            text-align: right;
+            border-bottom: @border-bc;
+            background-color: @t;
+        }
+
+        span {
+            display: inline-block;
+            .one-line-vertical-mid(30px);
+            padding: 0 5px;
+            float: left;
+        }
+
+        > * {
+            float: left;
+            margin-right: 5px;
+        }
+    }
+
+    .btnDelSelected, .btnAddSelected {
+        float: right;
+        margin-left: 5px;
+    }
+}

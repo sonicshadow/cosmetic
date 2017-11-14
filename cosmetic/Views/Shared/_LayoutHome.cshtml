@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>@ViewBag.Title - 汉焱祖方</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bundles/datetimepicker/css")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top homeNav">
+        <div class="container">
+            @*<div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("汉焱祖方", "Index", "Order", new { area = "" }, new { @class = "navbar-brand" })
+                </div>*@
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">深圳特强俊颜化妆品有限公司</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("About","Home")" class="navbar-brand">联系我们</a></li>
+                </ul></div>
+        </div>
+    </div>
+
+    <div style="position:relative;padding-top:50px">
+        @RenderBody()
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui/js")
+    @Scripts.Render("~/bundles/datetimepicker/js")
+    @Scripts.Render("~/bundles/comm")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "系统设置";
+    Func<string, string> hidSidebar = s =>
+    {
+        var roles = s.Split(',').Where(x => !string.IsNullOrWhiteSpace(x));
+        return roles.Any(x => User.IsInRole(x)) ? $"" : $"hidden";
+    };
+}
+<table class="table table-hover table-striped" style="width:300px">
+    <thead>
+        <tr>
+            <th>名称</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="@hidSidebar(SysRole.SystemSettingBankEdit)">
+            <td>银行设置</td>
+            <td><a href="@Url.Action("Index","BankManage")">查看</a></td>
+        </tr>
+        <tr class="@hidSidebar(SysRole.SystemSettingDiaplayEdit)">
+            <td>橱窗设置</td>
+            <td><a href="@Url.Action("Index","Displays")">查看</a></td>
+        </tr>
+        <tr class="@hidSidebar(SysRole.SystemSettingMissionEdit)">
+            <td>任务设置</td>
+            <td><a href="@Url.Action("Mission")">查看</a></td>
+        </tr>
+        <tr">
+            <td>编辑联系我们</td>
+            <td><a href="@Url.Action("Mission",new { isMission=false})">查看</a></td>
+        </tr>
+    </tbody>
+</table>
+

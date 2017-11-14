@@ -1,0 +1,254 @@
+﻿@model IEnumerable<Cosmetic.Models.DirectDetailsViewModel>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "奖励管理";
+    var paged = (PagedList.IPagedList)Model;
+    Cosmetic.Enums.UserIncomeType enumsType = Cosmetic.Enums.UserIncomeType.Bonus;
+    if (!string.IsNullOrWhiteSpace(Request["type"]))
+    {
+        enumsType = (Cosmetic.Enums.UserIncomeType)Enum.Parse(typeof(Cosmetic.Enums.UserIncomeType), Request["type"], false);
+    }
+    string type = enumsType.GetDisplayName();
+    string sIsPay = "全部状态";
+    if (!string.IsNullOrWhiteSpace(Request["isPay"]))
+    {
+        if (bool.Parse(Request["isPay"]))
+        {
+            sIsPay = "已付款";
+        }
+        else
+        {
+            sIsPay = "未付款";
+        }
+    }
+}
+<div class="userIncomeIndex">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="@Url.Action("DetailsExport", new {isPay=Request["isPay"], start = Request["start"], end = Request["end"], type = Request["type"] })">
+                            导出
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" data-toggle="modal" data-target="#myModal">
+                            一键付款
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a data-val="@Request["type"]" href="" class="dropdown-toggle" id="type" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @type <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @foreach (var item in (Cosmetic.Enums.UserIncomeType[])Enum.GetValues(typeof(Cosmetic.Enums.UserIncomeType)))
+                            {
+                                if (item != Cosmetic.Enums.UserIncomeType.RetailBonus)
+                                {
+                                    <li>
+                                        <a class="type" data-val="@item">@item.GetDisplayName()</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a data-val="@Request["isPay"]" id="isPay" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @sIsPay <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="isplay" data-val="">全部状态</a>
+                            </li>
+                            <li>
+                                <a class="isplay" data-val="true">已付款</a>
+                            </li>
+                            <li>
+                                <a class="isplay" data-val="false">未付款</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                @using (Html.BeginForm("Index", "UserIncome", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                {
+                    <input type="hidden" value="@Request["type"]" name="type" />
+                    <input type="hidden" value="@Request["isPay"]" name="isPay" />
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="start" name="start" value="@Request["start"]" placeholder="开始时间">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="end" name="end" value="@Request["end"]" placeholder="结束时间">
+                    </div>
+                    <button type="submit" class="btn btn-default">查询</button>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th><input type="checkbox" class="parent" checked /></th>
+                <th>@Html.DisplayNameFor(model => model.Time)</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Seller)
+                </th>
+                <th>
+                    销售<br />数量
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    总销售<br />金额
+                </th>
+                <th>
+                    直推奖金<br />10%
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Receivable)
+                </th>
+                <th>
+                    收款人<br />账户名称
+                </th>
+                <th>
+                    收款网点<br />联行号
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remark)
+                </th>
+                <th>
+                    收款人<br />级别
+                </th>
+                <th>
+                    收款人<br />身份证号
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            string c = "",text = "";
+            if (item.IsPay)
+            {
+                c = "disabled";
+                text = "text-muted";
+            }
+            else
+            {
+                c = "checked";
+            }
+        <tr class="@text">
+            <td><input type="checkbox" class="chlid" @c value="@item.ID" /></td>
+            <td>@Html.DisplayFor(model => item.Time)</td>
+            <td>
+                @Html.DisplayFor(model => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Seller)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Bonus)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Pay)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Receivable)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReceivableName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReceivableNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remark)
+            </td>
+            <td>
+                @item.ReceivableRank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReceivablesIDCard)
+            </td>
+        </tr>
+        }
+        @if (paged.IsLastPage)
+        {
+            Cosmetic.Models.UserIncomeViewModel foot = ViewBag.Amount;
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>合计</td>
+                    <td></td>
+                    <td>@foot.Count</td>
+                    <td></td>
+                    <td>@foot.Total</td>
+                    <td>@foot.Amount</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        }
+        
+    </table>
+
+    @*确认付款*@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">直推奖发放</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="alert"></div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-3  form-control-static">银行账号</label>
+                        <div class="col-md-9">
+                            @Html.DropDownList("PayeeId", (List<SelectListItem>)ViewBag.Payee, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="surepay" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.PageList(paged, Url.PageUrl())
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/userIncomeIndex")
+}

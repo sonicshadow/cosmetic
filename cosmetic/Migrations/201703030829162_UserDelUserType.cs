@@ -1,0 +1,18 @@
+namespace Cosmetic.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class UserDelUserType : DbMigration
+    {
+        public override void Up()
+        {
+            DropColumn("dbo.AspNetUsers", "Type");
+        }
+        
+        public override void Down()
+        {
+            AddColumn("dbo.AspNetUsers", "Type", c => c.Int(nullable: false));
+        }
+    }
+}

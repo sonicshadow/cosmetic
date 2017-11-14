@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Cosmetic.Models.ShareHolder>
+
+@{
+    ViewBag.Title = "公司股东分红报表";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">公司股东分红报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a target="_blank" href="@($"{Url.Action("ShareHolderExport",new {total=Request["total"] })}")">
+                        导出
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                        转账
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@Html.Hidden("total",Request["total"])
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Realname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Realname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Stock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDCard)
+        </td>
+    </tr>
+}
+    <tfoot>
+        <tr>
+            <td></td>
+            
+            <td>
+                合计
+            </td>
+            <td>
+                @Model.Sum(s=>s.Stock)
+            </td>
+            <td>
+                @Model.Sum(s => s.Total)
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+
+</table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">转账</h4>
+            </div>
+            <div class="modal-body">
+                <div class="zijinalert"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">转款人</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownList("PayeeId", (List<SelectListItem>)ViewBag.Payee, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">转款时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" id="time">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="transfer">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/shareHolder")
+}

@@ -1,0 +1,200 @@
+﻿@model IEnumerable<Cosmetic.Models.MissionList>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "任务管理";
+    var paged = (PagedList.IPagedList)Model;
+    string state = "全部状态";
+    Cosmetic.Enums.MissionState? misssionState = null;
+    if (Request["state"] != null)
+    {
+        misssionState = (Cosmetic.Enums.MissionState)Enum.Parse(typeof(Cosmetic.Enums.MissionState), Request["state"], false);
+        state = misssionState.GetDisplayName();
+    }
+    string type = "全部类型";
+    Cosmetic.Enums.MissionType? misssionType = null;
+    if (Request["type"] != null)
+    {
+        misssionType = (Cosmetic.Enums.MissionType)Enum.Parse(typeof(Cosmetic.Enums.MissionType), Request["type"], false);
+        type = misssionType.GetDisplayName();
+    }
+    var usertype = Comm.GetType(User.Identity.GetUserId());
+}
+<div class="missionIndex">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @if (ViewBag.LvUpOneToTop)
+                    {
+                        <li>@Html.ActionLink("申请升级", "Create")</li>
+                    }
+                    <li class="dropdown">
+                        <a data-val="@misssionState" id="dt_state" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @state <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="state" data-val="">全部状态</a>
+                            </li>
+                            @foreach (var item in (Cosmetic.Enums.MissionState[])Enum.GetValues(typeof(Cosmetic.Enums.MissionState)))
+                            {
+                                <li>
+                                    <a class="state" data-val="@item">@item.GetDisplayName()</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a data-val="@misssionType" class="dropdown-toggle" id="dt_type" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @type <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="type" data-val="">全部类型</a>
+                            </li>
+                            @foreach (var item in (Cosmetic.Enums.MissionType[])Enum.GetValues(typeof(Cosmetic.Enums.MissionType)))
+                            {
+                                <li>
+                                    <a class="type" data-val="@item">@item.GetDisplayName()</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                @if (usertype != Cosmetic.Enums.User.Normal)
+                {
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" value="@Request["userID"]" id="userID" class="form-control" placeholder="会员号">
+                        </div>
+                        <button type="button" id="search" class="btn btn-default">查询</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </nav>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                @if (usertype != Cosmetic.Enums.User.Normal)
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserID)
+                    </th>
+                    <th>
+                        手机号
+                    </th>
+                }
+                <th>
+                    @Html.DisplayNameFor(model => model.Recommend)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecommendPhone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MissionDetail.Last().UpdateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MissionDetail.Last().JData)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            var last = item.MissionDetail.Last();
+            <tr>
+                @if (usertype != Cosmetic.Enums.User.Normal)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.RealName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommend)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecommendPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDateTime)
+                </td>
+                <td>
+                    @item.State.GetDisplayName()
+                </td>
+                <td>
+                    @item.Type.GetDisplayName()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => last.UpdateTime)
+                </td>
+                <td>
+                    @if (last.StepID == 1)
+                    {
+                        <span>销量已完成 </span>
+                    }
+                    @if (last.StepID == 2)
+                    {
+                        <span>推荐人数已完成</span>
+                    }
+                    @last.JData
+                </td>
+                <td>
+
+                    @if (usertype != Cosmetic.Enums.User.Normal)
+                    {
+                        if (item.State == Cosmetic.Enums.MissionState.Start)
+                        {
+                            <input type="button" value="中断任务" class="btn btn-default btn-sm cancelMission" data-id="@item.ID" />
+                        }
+                        if (last.StepID == 0 || last.StepID == 3)
+                        {
+                            @Html.ActionLink("审核", "Edit", new { id = item.ID })
+                        }
+                    }
+                    else
+                    {
+                        var disabled = "";
+                        if (item.State == Cosmetic.Enums.MissionState.Start)
+                        {
+                            if (last.StepID == 1)
+                            {
+                                if (decimal.Parse(last.JData) < 800000)
+                                {
+                                    disabled = "disabled";
+                                }
+                            }
+                            if (last.StepID == 2)
+                            {
+                                if (int.Parse(last.JData) < 10)
+                                {
+                                    disabled = "disabled";
+                                }
+                            }
+                            <input type="button" @disabled value="完成任务" data-stepid="@last.StepID" data-id="@item.ID" class="btn btn-sm btn-default finishMission" />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+    @Html.PageList(paged, Url.PageUrl())
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/missionIndex")
+}

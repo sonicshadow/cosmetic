@@ -1,0 +1,70 @@
+﻿@model Cosmetic.Models.Notice
+
+@{
+    ViewBag.Title = "删除公告";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">公告管理</a></li>
+    <li class="active">@Model.Title</li>
+</ol>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Content)
+        </dd>
+
+        <dt>
+        </dt>
+
+        <dd>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model=>Model.ID)
+                <div class="form-actions no-color">
+                    <input type="submit" value="删除" class="btn btn-default" />
+                </div>
+            }
+        </dd>
+
+    </dl>
+</div>
+

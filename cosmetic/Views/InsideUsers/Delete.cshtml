@@ -1,0 +1,103 @@
+﻿@model Cosmetic.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "删除管理员";
+}
+
+<div class="insideUsersDelete">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("管理员管理", "Index", "InsideUsers")</li>
+        <li class="active">@Model.UserName</li>
+    </ol>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.RealName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RealName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IDCard)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Bank)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Bank)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BankCard)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.RoleGroupID)
+            </dt>
+
+            <dd>
+                @ViewBag.RoleGroup
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.RegisterDateTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RegisterDateTime)
+            </dd>
+
+            <dt>
+                手机号码
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt>
+                用户名
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+
+            <dt>
+            </dt>
+
+            <dd>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-actions no-color">
+                        <input type="submit" value="删除" class="btn btn-default" />
+                        @Html.ActionLink("返回", "Index", null, new { @class = "btn btn-default" })
+                    </div>
+                }
+            </dd>
+
+        </dl>
+
+    </div>
+</div>

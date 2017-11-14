@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Cosmetic.Models.Order>
+
+@{
+    ViewBag.Title = "我的订单";
+    var page = (PagedList.IPagedList<Cosmetic.Models.Order>)Model;
+    var t = Request["link"] == "DirectPush";
+    string state = "未完成订单";
+    Cosmetic.Enums.OrderViewState? orderState = null;
+    if (!string.IsNullOrWhiteSpace(Request["state"]))
+    {
+        orderState = (Cosmetic.Enums.OrderViewState)Enum.Parse(typeof(Cosmetic.Enums.OrderViewState), Request["state"], false);
+        state = orderState.GetDisplayName();
+    }
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("订单管理", "Index", "Order")</li>
+    @if (!t)
+    {
+        <li class="active">我的订单</li>
+    }
+    else
+    {
+        <li class="active">我的直推订单</li>
+    }
+</ol>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @state <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Action("UserOrder",new { link=Request["link"]})">未完成订单</a>
+                        </li>
+                        @foreach (var item in (Cosmetic.Enums.OrderViewState[])Enum.GetValues(typeof(Cosmetic.Enums.OrderViewState)))
+                        {
+                            <li>
+                                <a href="@Url.Action("UserOrder",new {link=Request["link"],state=item })">@item.GetDisplayName()</a>
+                            </li>
+                        }
+                    </ul>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Send)
+            </th>
+            <th>
+                欠发数量
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDateTime)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        var color = item.State == Cosmetic.Enums.OrderState.Delete ? "class=text-danger" : "";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Products.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.RealName)
+            </td>
+            <td>
+                @item.User.Rank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Send)
+            </td>
+            <td>
+                @(item.Count - item.Send)
+            </td>
+            <td @color>
+                @item.State.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDateTime)
+            </td>
+            <td>
+               @Html.ActionLink("详情", "Details", new { id = item.ID })
+            </td>
+        </tr>
+    }
+    @if (page.IsLastPage)
+    {
+        List<Cosmetic.Models.OrderFoot> foot = ViewBag.Foot;
+    <tfoot>
+        @foreach (var item in foot)
+        {
+            <tr>
+                <td></td>
+                <td>@item.Product.Name</td>
+                <td></td>
+                <td></td>
+                <td>@item.Total</td>
+                <td></td>
+                <td>@item.Count</td>
+                <td></td>
+                <td></td>
+                <td>@item.Send</td>
+                <td>@item.Owe</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+    </tfoot>
+    }
+</table>
+@Html.PageList(page, Url.PageUrl())

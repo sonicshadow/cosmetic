@@ -1,0 +1,55 @@
+﻿@model Cosmetic.Models.LoginViewModel
+@{
+    ViewBag.Title = "用户登录";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<div class="login">
+    <h2 class="text-center">@ViewBag.Title</h2>
+
+    <hr />
+    <div id="loginForm">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <p>
+                @Html.LabelFor(m => m.UserName,new { @class = "login-label" })
+                <div>
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "用户名或手机号" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                </div>
+            </p>
+            <p>
+                @Html.LabelFor(m => m.Password, new { @class = "login-label" })
+                <div>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </p>
+            <p>
+                <div class="checkbox">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                    <div class="forgot">
+                        @Html.ActionLink("忘记了密码?", "ForgotPassword")
+                    </div>
+                </div>
+                
+            </p>
+            <p>
+                <input id="btnSubmit" type="submit" value="登录" class="btn btn-default" />
+            </p>
+        }
+        
+    </div>
+    <div class="login-message text-danger">
+        <div>本公司任何时候不会采取任何方式让用户填写或提供银行密码!</div>
+        <div> 如有索要请第一时间通知本公司!</div>
+        <div>联系人：李先生/13549298909   路小姐/13553854087</div>
+        <div>公司会第一时间配合用户报警处理！</div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

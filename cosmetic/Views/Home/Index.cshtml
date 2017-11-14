@@ -1,0 +1,103 @@
+﻿@model Cosmetic.Models.Home
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+@Styles.Render("~/bundles/swiper/css")
+
+<div class="homeIndex">
+    <div class="homeIndex-swiper swiperModule">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url('/Content/image/swipeImg_01.png')"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <div class="homeIndex-container">
+        <div class="homeIndex-wrapper">
+            <div class="homeIndex-container-bg01"></div>
+            <div class="homeIndex-container-bg02"></div>
+            <div class="homeIndex-container-brand">
+                <div class="homeIndex-container-brand-tit">公司简介</div>
+                <div class="homeIndex-container-brand-cons fs16">
+                    深圳市特强俊颜化妆品有限公司，是一家采用现代科学技术，提取多种纯天然名贵中草药研制而成；专门解决面部色斑、痘痘、暗疮、皮肤松驰下垂、毛孔粗大、枯黄脸等问题性皮肤的美肤公司。是问题性皮肤失败者最后一站的公司！多年以来成千上万例临床经验，修复好问题性皮肤。让问题性皮肤者重新获得完美!
+                    汉焱祖方创造了美丽人生，让问题性皮肤者重新找回自信！！
+                    汉焱祖方爱心传播健康美的理念！用心打造中医秘方汉焱祖方系列排毒、养颜、抗衰产品，因人而异配合内调中草药，从根本上治疗由各种原因引起的色斑、痘痘、暗疮、皮肤松驰下垂、毛孔粗大、枯黄脸等问题。凡使用汉焱祖方排毒系列产品均签定法律合同包达到承诺效果！达不到承诺效果、无效退款！一次的尝试终生美丽！
+                    强大的品牌优势,专业的技术支持，完善的管理体系，先进的运营理念推动着公司不断的发展壮大，被中国化妆品权威机构授予“全国化妆品十佳诚信经销商”、“中国化妆品连锁专卖优秀运营商”、“中国优秀日化专营店连锁终端”。
+                </div>
+            </div>
+            <div class="homeIndex-container-brand">
+                <div class="homeIndex-container-brand-tit">汉·焱·祖·方</div>
+                <div class="homeIndex-container-brand-cons">创始人周总多年来因皮肤松驰下垂问题一直被深深困扰，后机缘巧合使用了一种纯中药成份的排毒液，把多年来的皮肤问题一次性统统解决，回到了10年前的青春美丽！让原本不自信的她立即做出决定，让更多为皮肤问题烦恼痛苦者早日找到自信！</div>
+                <div class="homeIndex-container-brand-mark"><span>品牌故事</span></div>
+            </div>
+            <div class="homeIndex-container-benefits">
+                <div class="benefits-tits">钜惠礼献  秀享夏日盛宴</div>
+                <div class="benefits-list">
+                    <ul>
+                        @*商品循环*@
+                        @foreach (var item in Model.Display)
+                        {
+                        <li>
+                            <a target="_blank" href="@Url.Action("Details", "Displays", new { id = item.ID })"></a>
+                            <div class="benefits-list-img">
+                                <a href="@Url.Action("Details", "Displays", new { id = item.ID })">
+                                    @if (item.FileUpload.Images.Count() > 0)
+                                        {
+                                        <img src="@Url.ResizeImage(item.FileUpload.Images[0],260,210)" />
+                                        }
+                                </a>
+                            </div>
+                            <div class="benefits-list-title">
+                                <a target="_blank" href="@Url.Action("Details", "Displays", new { id = item.ID })">@item.Title</a>
+                            </div>
+                            <div class="benefits-list-style">@item.Subtitle</div>
+                            @*<div class="benefits-list-price paddingTb5">商品价格 ￥120.00</div>*@
+                            <div class="benefits-list-link">
+                                <a target="_blank" href="@Url.Action("Details", "Displays", new { id = item.ID })">了解详情</a>
+                            </div>
+                        </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="homeIndex-advert"><span>臻品钜奉</span><span>分享惊喜</span></div>
+
+    <div class="homeIndex-container">
+        <div class="homeIndex-wrapper">
+            <div class="homeIndex-notice">
+                <div class="homeIndex-notice-tits">公告通知</div>
+                <ul>
+                    @foreach (var item in Model.Notice)
+                    {
+                    <li>
+                        <a target="_blank" href="@Url.Action("Details","Notices",new { id=item.ID})">
+                            <span>@item.CreateTime.ToString("MM.dd")</span>@item.Title
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+            <div class="homeIndex-container-pAdvert">
+                <img src="~/Content/image/cosmeticIndex_pAdvert01.png" />
+                <img src="~/Content/image/cosmeticIndex_pAdvert02.png" />
+                <img src="~/Content/image/cosmeticIndex_pAdvert03.png" />
+            </div>
+        </div>
+    </div>
+
+    <div class="homeIndex-footer">
+        <div class="homeIndex-footer_logo"></div>
+        <div class="homeIndex-footer_code"><a href="http://www.miitbeian.gov.cn" target="_blank">粤ICP备15036491号-4@2016 - 深圳特强俊颜化妆品有限公司</a></div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/swiper/js")
+    @Scripts.Render("~/Scripts/Views/homeIndex.js")
+}

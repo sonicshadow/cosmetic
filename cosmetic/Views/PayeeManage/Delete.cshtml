@@ -1,0 +1,46 @@
+﻿@model Cosmetic.Models.Payee
+
+@{
+    ViewBag.Title = "删除公司账号";
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("公司账号管理", "Index")</li>
+    <li class="active">@Model.Name</li>
+</ol>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bank)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bank)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankCard)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankCard)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="删除" class="btn btn-default" />
+        </div>
+    }
+</div>

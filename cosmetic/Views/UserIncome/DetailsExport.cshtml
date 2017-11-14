@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Cosmetic.Models.DirectDetailsViewModel>
+
+@{
+    ViewBag.Title = "直推奖明细报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+<table border="1">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Time)</th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seller)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bonus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Receivable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivablesIDCard)
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => item.Time)</td>
+            <td>
+                @Html.DisplayFor(model => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Seller)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Bonus)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(model => item.Pay)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(model => item.Receivable)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ReceivableName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(model => item.ReceivableNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Remark)
+            </td>
+            <td>
+                @item.ReceivableRank.GetDisplayName()
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(model => item.ReceivablesIDCard)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>合计</td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(D2:D{Model.Count() + 1})")">0</td>  
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(F2:F{Model.Count() + 1})")">0</td>  
+            <td x:num x:fmla="@($"=SUM(G2:G{Model.Count() + 1})")">0</td>  
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

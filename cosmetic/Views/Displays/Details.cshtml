@@ -1,0 +1,109 @@
+﻿@model Cosmetic.Models.DisplayViewModel
+
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+@Styles.Render("~/bundles/swiper/css")
+
+<div class="displayManageDetail">
+    <div class="displayManageDetail-logo"></div>
+    <div class="displayManageDetail-content">
+        <div class="displayManageDetail-wraper">
+            <div class="fs20">@Html.DisplayFor(model => model.Title)</div>
+            <div class="fs20">@Html.DisplayFor(model => model.Subtitle)</div>
+            <div class="clearfix" style="margin-top:15px">
+                <div class="displayManageDetail-content-img">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model.FileUpload.Images)
+                            {
+                                <div class="swiper-slide" style="background-image:url('@Url.ResizeImage(item,520,420)')"></div>
+                            }
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <div class="displayManageDetail-content-r">
+                    <div class="displayManageDetail-content-tab">@Html.DisplayFor(model => model.Tag)</div>
+                    <div class="displayManageDetail-content-format">
+                        <div class="fs20">产品规格</div>
+                        <div class="displayManageDetail-content-format-parameter">@Html.DisplayFor(model => model.Specification)</div>
+                    </div>
+                    <div class="displayManageDetail-content-intro">
+                        <div class="fs20">商品介绍</div>
+                        <div class="fs18" style="margin-top:10px">@Html.DisplayFor(model => model.Content)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="homeIndex-footer homeIndex-footer-style2">
+    <div class="homeIndex-footer_logo"></div>
+    <div class="homeIndex-footer_code">粤ICP备16526425号-4@2016 - 汉焱祖方</div>
+</div>
+
+@*<div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Info)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Info)
+            </dd>
+            <a href="~/Views/Shared/_LayoutHome.cshtml">~/Views/Shared/_LayoutHome.cshtml</a>
+            <dt>
+                @Html.DisplayNameFor(model => model.Spec)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Spec)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Tag)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Tag)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Subhead)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Subhead)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FileUpload)
+            </dt>
+
+            <dd>
+                @foreach (var item in Model.FileUpload.Images)
+                {
+                    var imgsrc = Url.ResizeImage(item, h: 70, w: 120);
+                    <img title="@Path.GetFileName(item)" src="@imgsrc" />
+                }
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+
+@section Scripts{
+    @Scripts.Render("~/bundles/swiper/js", "~/bundles/displayManageDetail")
+}

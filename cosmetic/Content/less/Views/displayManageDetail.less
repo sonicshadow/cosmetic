@@ -1,0 +1,97 @@
+﻿@import "../base";
+
+.displayManageDetail {
+    padding-bottom:329px;
+
+    .displayManageDetail-logo {
+        height: 112px;
+        background: url("../../image/cosmeticDetail_logo.png") no-repeat center;
+        background-size: 409px 31px;
+        border-bottom: @border-bc;
+    }
+
+    .displayManageDetail-content {
+        .displayManageDetail-wraper {
+            .clearfix();
+            width: 980px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .fs24 {
+            font-size: @font-size-6;
+        }
+
+        .fs20{
+            font-size:@font-size-5;
+        }
+
+        .fs18{
+            font-size:@font-size-4;
+        }
+
+        .displayManageDetail-content-img {
+            width: 506px;
+            height: 421px;
+            border: @border-bc;
+            float: left;
+            padding: 32px;
+            overflow: hidden;
+            background-color: @bg-color-white;
+
+            .swiper-container {
+                .swiper-slide {
+                    height: 355px;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+
+                .swiper-pagination {
+                    .swiper-pagination-bullet {
+                        .rectangle(10px,10px);
+                        border-radius: 8px;
+                        background: #dcdada;
+                        margin: 0 5px;
+                    }
+
+                    .swiper-pagination-bullet-active {
+                        background-color: #624631;
+                    }
+                }
+            }
+        }
+
+        .displayManageDetail-content-r{
+            float:left;
+            width:434px;
+            padding-left:20px;
+
+            .displayManageDetail-content-tab{
+                color:@font-color-brown01;
+                font-size:@font-size-5;
+                border-bottom:@border-bc;
+                padding-bottom:8px;
+            }
+
+            .displayManageDetail-content-format{
+                margin-top:28px;
+                border-bottom:@border-bc;
+                padding-bottom:20px;
+
+                .displayManageDetail-content-format-parameter{
+                    font-size:@font-size-3;
+                    color:#a9a8a8;
+                    border:@border-bc;
+                    padding:5px 20px;
+                    margin-top:15px;
+                    display:inline-block;
+                }
+            }
+
+            .displayManageDetail-content-intro{
+                margin-top:28px;
+            }
+        }
+    }
+}

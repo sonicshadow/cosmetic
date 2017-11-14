@@ -1,0 +1,43 @@
+﻿@import "base";
+
+.autocomplete {
+    .clean-ul();
+    border: @border-bc;
+    display: inline-block;
+    border-radius: 5px;
+    position: absolute;
+    z-index: @z-index-bottom;
+    background-color: #fff;
+    overflow: hidden;
+    min-width: 280px;
+    left: 15px;
+    top: 34px;
+    max-height:500px;
+    overflow-y:auto;
+    li {
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f5f5f5;
+        }
+    }
+}
+
+.input-group {
+    .autocomplete {
+        left: 0;
+    }
+}
+
+.navbar {
+    .form-group {
+        position: relative;
+
+        .autocomplete {
+            min-width: 173px;
+            left: 0px;
+            top: 34px;
+        }
+    }
+}

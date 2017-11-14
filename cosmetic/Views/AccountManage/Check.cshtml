@@ -1,0 +1,152 @@
+﻿@model IEnumerable<Cosmetic.Models.ReceivablesList>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "收款审核";
+    ViewBag.Sidebar = "收款审核";
+    var page = (PagedList.IPagedList)Model;
+    Cosmetic.Enums.CheckState tempState;
+    string selState = "所有状态";
+    int count = ViewBag.NoCheckCount;
+    if (Enum.TryParse(Request["check"], out tempState))
+    {
+        selState = tempState.GetDisplayName();
+    }
+    
+    Func<string, string> hidSidebar = s =>
+    {
+        var roles = s.Split(',').Where(x => !string.IsNullOrWhiteSpace(x));
+        return roles.Any(x => User.IsInRole(x)) ? $"" : $"hidden";
+    };
+    var type = Comm.GetType(User.Identity.GetUserId());
+}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @selState
+                        @if (count > 0)
+                        {
+                            <span class="badge">@count</span>
+                        }
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Action("Check")">
+                                所有状态
+                            </a>
+                        </li>
+                        @foreach (Cosmetic.Enums.CheckState item in Enum.GetValues(typeof(Cosmetic.Enums.CheckState)))
+                        {
+                            <li>
+                                <a href="@Url.Action("Check",new {check= (int)item })">
+                                    @item.GetDisplayName()
+                                    @if (item == Cosmetic.Enums.CheckState.NoCheck && count > 0)
+                                    {
+                                        <span class="badge">@count</span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                申请人
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.Fee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.BankAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Products)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th class="@hidSidebar(SysRole.ReceivablesRead)"></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.Fee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.BankAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.BankCard)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.BankName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.User.RealName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.Products.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.Count)
+            </td>
+            <td>
+                @item.State.GetDisplayName()
+            </td>
+            <td class="@hidSidebar(SysRole.ReceivablesRead)">
+                @if (item.State == Cosmetic.Enums.MissionState.CompleteNoCheck)
+                {
+                    <input type="button" value="确认收款" data-id="@item.ID" data-result="true" class="btn btn-default btn-group-xs check" />
+                    <input type="button" value="取消收款" data-id="@item.ID" data-result="false" class="btn btn-default btn-group-xs check" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PageList(page, Url.PageUrl())
+
+@section Scripts{
+    @Scripts.Render("~/Bundles/accountManageIndex")
+}

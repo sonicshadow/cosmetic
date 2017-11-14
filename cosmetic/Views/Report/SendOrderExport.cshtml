@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Cosmetic.Models.SendOrderViewModel>
+
+@{
+    ViewBag.Title = "未发货订单明细";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Send)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SendTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSendTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parent)
+            </td>
+            <td>
+                @if (item.ParentRank.HasValue)
+                {
+                    @item.ParentRank.GetDisplayName()
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @item.UserRank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Send)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSendTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>合计</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(H2:H{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(J2:J{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(L2:L{Model.Count()+1})")">
+                0
+            </td>
+            <td x:num x:fmla="@($"=SUM(M2:M{Model.Count()+1})")">
+                0
+            </td>
+            <td x:num x:fmla="@($"=SUM(N2:N{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Cosmetic.Models.NowStockViewModel>
+@{
+    ViewBag.Title = "当前所有用户库存报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+<table border="1" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </th>
+        </tr>
+    </thead>
+   
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @(item.Rank?.GetDisplayName())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommend)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem=>item.IDCard)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(B2,B{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

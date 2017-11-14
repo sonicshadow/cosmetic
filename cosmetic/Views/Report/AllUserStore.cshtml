@@ -1,0 +1,169 @@
+﻿@model IEnumerable<Cosmetic.Models.NowStockViewModel>
+
+@{
+    ViewBag.Title = "当前所有用户库存报表";
+    var paged = (PagedList.IPagedList)Model;
+    var p = new Dictionary<string, object>();
+    if (!string.IsNullOrWhiteSpace(Request["filter"]))
+    {
+        p.Add("filter", Request["filter"]);
+    }
+    Cosmetic.Enums.UserType rank;
+    string selRank = "全部等级";
+    if (Enum.TryParse<Cosmetic.Enums.UserType>(Request["rank"], out rank))
+    {
+        p.Add("rank", (int)rank);
+        selRank = rank.GetDisplayName();
+    }
+    p.Add("page", Request["page"]);
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index")">报表管理</a></li>
+    <li class="active">当前所有用户库存报表</li>
+</ol>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav">
+                <li><a target="_blank" href="@($"{Url.Action("AllUserStoreExport")}?{p.ToParam()}")">导出</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@selRank <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@(Url.Action("AllUserStore",new {filter=Request["filter"]}))">全部等级</a></li>
+                        @foreach (Cosmetic.Enums.UserType item in Enum.GetValues(typeof(Cosmetic.Enums.UserType)))
+                        {
+                            <li><a href="@(Url.Action("AllUserStore",new {rank=(int)item ,filter=Request["filter"]}))">@item.GetDisplayName()</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+            @using (Html.BeginForm("AllUserStore", "Report", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                @Html.Hidden("rank", Request["rank"])
+                <div class="form-group">
+                    <input name="filter" value="@Request["filter"]" type="text" class="form-control" placeholder="姓名/手机号码">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            }
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDCard)
+            </th>
+            @*<th></th>*@
+        </tr>
+    </thead>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @(item.Rank?.GetDisplayName())
+            </td>
+            <td>
+                @(string.IsNullOrWhiteSpace(item.Recommend)&&item.OwnerName != "公司" ? "公司": item.Recommend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDCard)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                @Model.Sum(s => s.Count)
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            @*<td></td>*@
+        </tr>
+    </tfoot>
+</table>
+@Html.PageList(paged, Url.PageUrl())
+
+@*盘盈亏*@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="exampleModalAlert"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-2">数量</label>
+                        <div class="col-sm-10 form-control-static">
+                            <input type="text" class="form-control col-md-10" id="sp_count">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label col-md-2">备注</label>
+                        <div class="col-sm-10 form-control-static">
+                            <textarea class="form-control" rows="5" id="remark"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="sp_edit" class="btn btn-primary" data-type="">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/allUserStore")
+}

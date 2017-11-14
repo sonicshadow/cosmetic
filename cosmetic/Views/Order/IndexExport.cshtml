@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Cosmetic.Models.Order>
+
+@{
+    ViewBag.Title = "订单管理";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+    var stock = (List<Cosmetic.Models.OrderFoot>)ViewBag.Stock;
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Send)
+            </th>
+            <th>
+                欠发数量
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDateTime)
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        var color = item.State == Cosmetic.Enums.OrderState.Delete ? "style=color:red" : "";
+        <tr>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Products.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.RealName)
+            </td>
+            <td>
+                @item.User.Rank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Send)
+            </td>
+            <td>
+                @(item.Count - item.Send)
+            </td>
+            <td @color>
+                @item.State.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDateTime)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        @foreach (var item in stock.Where(s => !s.IsStock))
+        {
+            <tr>
+                <td></td>
+                <td>@item.Product.Name</td>
+                <td></td>
+                <td></td>
+                <td>@item.Total</td>
+                <td></td>
+                <td>@item.Count</td>
+                <td></td>
+                <td></td>
+                <td>@item.Send</td>
+                <td>@item.Owe</td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        @foreach (var item in stock.Where(s => s.IsStock))
+            {
+            <tr>
+                <td></td>
+                <td>@item.Product.Name</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>库存数量</td>
+                <td>@item.Count</td>
+                <td></td>
+                <td></td>
+                <td>库存欠数</td>
+                <td>@item.Owe</td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+    </tfoot>
+
+</table>
+

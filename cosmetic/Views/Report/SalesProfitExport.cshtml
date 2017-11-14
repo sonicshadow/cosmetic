@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Cosmetic.Models.SalesProfitViewModel>
+
+@{
+    ViewBag.Title = "销售利润报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+    int count = 0;
+    decimal total = 0, profit = 0;
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Difference)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        count = item.IsOrder ? count + item.Count : count;
+        total = item.IsOrder ? total + item.Total : total;
+        profit = profit + item.Profit;
+        string style = !item.IsOrder ? "style=color:#ff0000;" : "";
+        <tr @style>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuyingPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Profit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>@item.UserRank.GetDisplayName()</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>合计</td>
+            <td></td>
+            <td>
+                @count
+            </td>
+            <td></td>
+            <td>
+                @total
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                @profit
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

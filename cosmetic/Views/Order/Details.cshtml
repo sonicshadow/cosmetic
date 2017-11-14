@@ -1,0 +1,157 @@
+﻿@model Cosmetic.Models.OrderViewModel
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "订单明细";
+    var type = Comm.GetType(User.Identity.GetUserId()) == Cosmetic.Enums.User.Normal;
+}
+<div>
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("订单管理", "Index")</li>
+        @if (Request["link"] == "AllOrder")
+        {
+            <li>@Html.ActionLink("全部订单", "AllOrder")</li>
+        }
+        else if (Request["link"] == "DirectPush")
+        {
+            <li>@Html.ActionLink("我的直推订单", "UserOrder", new { link = "DirectPush" })</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink("我的订单", "UserOrder")</li>
+        }
+
+        <li class="active">@Model.Code</li>
+    </ol>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.User.RealName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Model.State.GetDisplayName()
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Send, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Send, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Send, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreateDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.CreateDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CreateDateTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @if (!type)
+            {
+                if (!string.IsNullOrWhiteSpace(Model.BankAccount))
+                {
+                    <div class="form-group">
+                        <label class="control-label col-md-2">收款人</label>
+                        <div class="col-md-10 form-control-static">
+                            @Model.BankAccount<span>(@Model.BankCard @Model.BankName)</span>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceiptDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.ReceiptDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReceiptDateTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static">
+                    @Html.DisplayFor(model => model.Product.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Product.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DeliverHistory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 form-control-static form-control-static">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.DeliverHistory.First().Address)</th>
+                                <th>@Html.DisplayNameFor(model => model.DeliverHistory.First().Code)</th>
+                                <th>@Html.DisplayNameFor(model => model.DeliverHistory.First().Count)</th>
+                                <th>@Html.DisplayNameFor(model => model.DeliverHistory.First().CreateDateTime)</th>
+                                <th>@Html.DisplayNameFor(model => model.DeliverHistory.First().Express)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.DeliverHistory)
+                            {
+                                <tr>
+                                    <td>@item.Address</td>
+                                    <td>@item.Code</td>
+                                    <td>@item.Count</td>
+                                    <td>@Html.DisplayFor(model => item.CreateDateTime)</td>
+                                    <td>@item.Express</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

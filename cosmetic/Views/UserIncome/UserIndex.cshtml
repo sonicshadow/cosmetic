@@ -1,0 +1,166 @@
+﻿@model IEnumerable<Cosmetic.Models.UserIncomeViewModel>
+
+@{
+    ViewBag.Title = "直推奖";
+    var paged = (PagedList.IPagedList)Model;
+    Cosmetic.Enums.UserIncomeType enumsType = Cosmetic.Enums.UserIncomeType.Bonus;
+    if (Request["type"] != null)
+    {
+        enumsType = (Cosmetic.Enums.UserIncomeType)Enum.Parse(typeof(Cosmetic.Enums.UserIncomeType), Request["type"], false);
+    }
+    string type = enumsType.GetDisplayName();
+    string sIsPay = "全部状态";
+    if (!string.IsNullOrWhiteSpace(Request["isPay"]))
+    {
+        if (bool.Parse(Request["isPay"]))
+        {
+            sIsPay = "已打款";
+        }
+        else
+        {
+            sIsPay = "未打款";
+        }
+    }
+}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @type <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in (Cosmetic.Enums.UserIncomeType[])Enum.GetValues(typeof(Cosmetic.Enums.UserIncomeType)))
+                        {
+                            <li>
+                                <a href="@Url.Action("UserIndex",new {type=item,ispay= Request["isPay"] })">@item.GetDisplayName()</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @sIsPay <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Action("UserIndex",new {type=Request["type"] })">全部状态</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("UserIndex",new {type=Request["type"],ispay=true })">已打款</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("UserIndex",new {type=Request["type"],ispay=false })">未打款</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecommendRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                总金额
+            </th>
+            <th>
+                直推奖金10%
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommend)
+            </td>
+            <td>
+                @item.RecommendRank.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @(item.IsPay ? "是" : "否")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankCard)
+            </td>
+        </tr>
+    }
+    @if (paged.IsLastPage)
+    {
+        Cosmetic.Models.UserIncomeViewModel foot = ViewBag.Foot;
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    @foot.Count
+                </td>
+                <td>
+                    @foot.Total
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => foot.Amount)
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    }
+</table>
+@Html.PageList(paged, Url.PageUrl())

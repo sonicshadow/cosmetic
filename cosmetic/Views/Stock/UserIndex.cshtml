@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Cosmetic.Models.StockViewModel>
+
+@{
+    ViewBag.Title = "库存管理";
+    var productList = (List<SelectListItem>)ViewBag.Product;
+    var paged = (PagedList.IPagedList<Cosmetic.Models.StockViewModel>)Model;
+    string p = "选择商品";
+    if (!string.IsNullOrWhiteSpace(Request["pid"]))
+    {
+        p = productList.FirstOrDefault(s => s.Selected == true).Text;
+    }
+}
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle supplier_a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        @p   <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in productList)
+                        {
+                            <li>
+                                <a href="@Url.Action("UserIndex", new { pid = item.Value })">@item.Text</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+                @if (!string.IsNullOrWhiteSpace(Request["pid"]))
+                {
+                    if (ViewBag.Show)
+                    {
+                        <li>
+                            <input type="hidden" value="@Request["pid"]" id="pid" />
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#myModal">出库功能</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </th>
+            <th>进出单号</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.NO)</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @item.Type.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier)
+            </td>
+            <td>
+                @if (item.Rank.HasValue)
+                {
+                    @item.Rank.GetDisplayName()
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        @{
+            var list = Model.GroupBy(s => s.Product.Name).Select(s => new
+            {
+                Name = s.Key,
+                Count = s.Sum(q => q.Count)
+            });
+        }
+        @foreach (var item in list)
+        {
+            <tr>
+                <td>
+                    结存
+                </td>
+                <td></td>
+                <td>@item.Name</td>
+                <td></td>
+                <td>
+                    @item.Count
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td>
+                总合计
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @Model.Sum(s => s.Count)
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+@Html.PageList(paged, Url.PageUrl())
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+            </div>
+            <div class="modal-body">
+                <div id="alert"></div>
+                <h3>
+                    自己做面部排毒使用一套 @p 产品
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="stockEdit" class="btn btn-primary">确定出货</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/stockUserIndex")
+}

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Cosmetic.Models.BankCapital>
+
+@{
+    ViewBag.Title = "银行资金总额分布报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.BankAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>帐户余额</td>
+            <td x:num x:fmla="@($"=SUM(C2:C{Model.Count()+1})")">
+                0
+            </td>
+        </tr>
+    </tfoot>
+</table>
+

@@ -1,0 +1,241 @@
+﻿@model IEnumerable<Cosmetic.Models.Order>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "订单管理";
+    string state = "未完成订单";
+    Cosmetic.Enums.OrderViewState? orderState = null;
+    if (!string.IsNullOrWhiteSpace(Request["state"]))
+    {
+        orderState = (Cosmetic.Enums.OrderViewState)Enum.Parse(typeof(Cosmetic.Enums.OrderViewState), Request["state"], false);
+        state = orderState.GetDisplayName();
+    }
+    var page = (PagedList.IPagedList<Cosmetic.Models.Order>)Model;
+    var type = Comm.GetType(User.Identity.GetUserId()) == Cosmetic.Enums.User.Normal;
+    var p = new Dictionary<string, object>();
+    if (!string.IsNullOrWhiteSpace(Request["userID"]))
+    {
+        p.Add("userID", Request["userID"]);
+    }
+    if (!string.IsNullOrWhiteSpace(Request["start"]))
+    {
+        p.Add("start", Request["start"]);
+    }
+    if (!string.IsNullOrWhiteSpace(Request["end"]))
+    {
+        p.Add("end", Request["end"]);
+    }
+    if (!string.IsNullOrWhiteSpace(Request["state"]))
+    {
+        p.Add("state", Request["state"]);
+    }
+    var stock = (List<Cosmetic.Models.OrderFoot>)ViewBag.Stock;
+}
+<div class="orderIndex">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @if (type)
+                    {
+                        <li>
+                            @Html.ActionLink("我的订单", "UserOrder")
+                        </li>
+                        <li>
+                            @Html.ActionLink("我的直推订单", "UserOrder", new { link = "DirectPush" })
+                        </li>
+                        <li>
+                            <a href="@($"{Url.Action("IndexExport")}?{p.ToParam()}")">导出</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink("全部订单", "AllOrder")
+                        </li>
+                    }
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @state <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @{   p.Remove("state");}
+                            <li>
+                                <a href="@($"{Url.Action("Index")}?{p.ToParam()}")">未完成订单</a>
+                            </li>
+                            @foreach (var item in (Cosmetic.Enums.OrderViewState[])Enum.GetValues(typeof(Cosmetic.Enums.OrderViewState)))
+                            {
+                                p.Add("state", item);
+                                <li>
+                                    <a href="@($"{Url.Action("Index")}?{p.ToParam()}")">@item.GetDisplayName()</a>
+                                </li>
+                                p.Remove("state");
+                            }
+                        </ul>
+
+                    </li>
+                </ul>
+                @using (Html.BeginForm("Index", "Order", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+                {
+                    @Html.Hidden("state", Request["state"])
+                    <div class="form-group">
+                        <input type="text" name="userID" value="@Request["userID"]" class="form-control" placeholder="会员号">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="start" class="form-control" value="@Request["start"]" placeholder="开始时间">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="end" class="form-control" value="@Request["end"]" placeholder="结束时间">
+                    </div>
+                    <button type="submit" class="btn btn-default">查询</button>
+                }
+            </div>
+        </div>
+    </nav>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.Rank)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Recommend)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ParentUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Send)
+                </th>
+                <th>
+                    欠发数量
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDateTime)
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            var color = item.State == Cosmetic.Enums.OrderState.Delete ? "class=text-danger" : "";
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Products.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.RealName)
+                </td>
+                <td>
+                    @item.User.Rank.GetDisplayName()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommend)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParentUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Send)
+                </td>
+                <td>
+                    @(item.Count - item.Send)
+                </td>
+                <td @color>
+                    @item.State.GetDisplayName()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDateTime)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.ID })
+                </td>
+            </tr>
+        }
+        @if (page.IsLastPage)
+        {
+            <tfoot>
+                @foreach (var item in stock.Where(s => !s.IsStock))
+                {
+                    <tr>
+                        <td></td>
+                        <td>@item.Product.Name</td>
+                        <td></td>
+                        <td></td>
+                        <td>@item.Total</td>
+                        <td></td>
+                        <td>@item.Count</td>
+                        <td></td>
+                        <td></td>
+                        <td>@item.Send</td>
+                        <td>@item.Owe</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+                @foreach (var item in stock.Where(s => s.IsStock))
+                {
+                    <tr>
+                        <td></td>
+                        <td>@item.Product.Name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>库存数量</td>
+                        <td>@item.Count</td>
+                        <td></td>
+                        <td></td>
+                        <td>库存欠数</td>
+                        <td>@item.Owe</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            </tfoot>
+        }
+    </table>
+    @Html.PageList(page, Url.PageUrl())
+</div>
+
+@section Scripts {
+    <script>
+        new searchUser({ target: "[name=userID]" });
+        $("[name=start],[name=end]").date();
+    </script>
+}

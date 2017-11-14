@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Cosmetic.Models.DirectPaymentViewModel>
+
+@{
+    ViewBag.Title = "直推奖付款报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Pay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableBankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivableNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Totla)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.Pay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceivableBankName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.ReceivableCard)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceivableName)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.ReceivableNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Totla)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>合计</td>
+            <td>
+                @Model.Sum(s => s.Totla)
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

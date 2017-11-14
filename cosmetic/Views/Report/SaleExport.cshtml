@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Cosmetic.Models.SaleViewModel>
+
+@{
+    ViewBag.Title = "销售报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seller)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Difference)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesProfit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.UserRank)</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Seller)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Count)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyingPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Difference)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalesProfit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @item.UserRank.GetDisplayName()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remark)
+        </td>
+    </tr>
+}
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                合计
+            </td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(D2:D{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(F2:F{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(I2:I{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

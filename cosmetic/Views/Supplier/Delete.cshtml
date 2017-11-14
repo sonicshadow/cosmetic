@@ -1,0 +1,74 @@
+﻿@model Cosmetic.Models.Supplier
+
+@{
+    ViewBag.Title = "删除供应商";
+}
+
+<div class="supplierDelete">
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("供应商列表", "Index")</li>
+        <li class="active">@Model.Name</li>
+    </ol>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Contacts)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Contacts)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Bank)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Bank)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BankCard)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="删除" class="btn btn-default" /> 
+                @Html.ActionLink("返回", "Index",null,new { @class= "btn btn-default" })
+            </div>
+        }
+    </div>
+</div>

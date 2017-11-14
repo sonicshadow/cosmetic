@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Cosmetic.Models.StockViewModel>
+
+@{
+    ViewBag.Title = "库存交易报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </th>
+            <th>进出单号</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rank)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td style="@Comm.ExcelString">
+                @Html.DisplayFor(modelItem => item.NO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @item.Type.GetDisplayName()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier)
+            </td>
+            <td>
+                @if (item.Rank.HasValue)
+                {
+                    @item.Rank.GetDisplayName()
+                }
+            </td>
+            <td style="@Comm.ExcelString">@Html.DisplayFor(modelItem => item.UserName)</td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td>
+                存结
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td x:num x:fmla="@($"=SUM(E2:E{Model.Count() + 1})")">0</td>            
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+

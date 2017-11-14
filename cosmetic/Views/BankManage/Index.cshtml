@@ -1,0 +1,43 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "银行设置";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","SystemSetting")">系统管理</a></li>
+    <li class="active">银行设置</li>
+</ol>
+<table class="table table-hover table-striped table-autowidth">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+                <td>
+                    <button name="btnDel" data-name="@item" class="btn btn-xs btn-danger">删除</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <input id="txtName" type="text" value="" placeholder="银行名称" />
+            </td>
+            <td>
+                <button id="btnAdd" class="btn btn-xs btn-success">添加</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+@section Scripts{
+    @Scripts.Render("~/Bundles/bankIndex")
+}

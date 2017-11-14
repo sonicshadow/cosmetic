@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Cosmetic.Models.ProfitViewModel>
+
+@{
+    ViewBag.Title = "公司利润报表";
+    Layout = "~/Views/Shared/_LayoutExport.cshtml";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountKind)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountKind)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remark)
+        </td>
+    </tr>
+}
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                合计
+            </td>
+            <td x:num x:fmla="@($"=SUM(C2:C{Model.Count()+1})")">
+                0
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Cosmetic.Models.Staff>
+
+@{
+    ViewBag.Title = "员工管理";
+    List<Cosmetic.Models.Department> allDep = ViewBag.AllDep;
+    var paged = (PagedList.PagedList<Cosmetic.Models.Staff>)Model;
+    var strDep = Request["depid"];
+    var strFilter = Request["filter"];
+    int iDepID;
+    Dictionary<string, object> p = new Dictionary<string, object>();
+    p.Add("page", "{PageIndex}");
+    if (int.TryParse(strDep, out iDepID))
+    {
+        var dep = allDep.FirstOrDefault(s => s.ID == iDepID);
+        if (dep != null)
+        {
+            strDep = dep.Name;
+            p.Add("depId", iDepID);
+        }
+        else
+        {
+            strDep = "部门";
+        }
+    }
+    else
+    {
+        strDep = "部门";
+    }
+    if (!string.IsNullOrWhiteSpace(strFilter))
+    {
+        p.Add("filter", strFilter);
+    }
+}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="@Url.Action("Index","Departments")">部门管理</a></li>
+                <li><a href="@Url.Action("Create")">添加</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@strDep <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Index")">所有</a></li>
+                        @foreach (var item in allDep)
+                        {
+                            <li><a href="@Url.Action("Index", new { depID = item.ID })">@item.Name</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input id="txtFilter" type="text" value="@strFilter" class="form-control" placeholder="员工姓名">
+                </div>
+                <button id="btnSearch" type="button" class="btn btn-default">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Work)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasicSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlusSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeductSalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @(Model.ToList().IndexOf(item)+1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Work)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasicSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlusSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeductSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryTime)
+            </td>
+            <td>
+                @Html.ActionLink("编辑", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("查看", "Details", new { id = item.ID }) |
+                @Html.ActionLink("删除", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PageList(paged, $"{Url.Action("Index")}{p.ToParam("?")}")
+@section Scripts{
+    @Scripts.Render("~/Bundles/staffsIndex")    
+}
